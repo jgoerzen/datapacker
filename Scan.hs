@@ -36,7 +36,8 @@ binify_po :: (Num s, Ord s, Show o) =>
 binify_po _ [] = Right []                     -- ^ Ran out of sizes
 binify_po [] _ = Left "Ran out of bins"
 binify_po (thisbinsize:otherbins) sizes =
-    let fillBin accumsize ((s, o):xs) 
+    let fillBin accumsize [] = Right []
+        fillBin accumsize ((s, o):xs) 
             | s > thisbinsize = Left $ "Size " ++ show s ++ " greater than bin size " ++ show thisbinsize ++ " at " ++ show o
             | s + accumsize > thisbinsize = Right []
             | otherwise = do next <- fillBin (accumsize + s) xs
