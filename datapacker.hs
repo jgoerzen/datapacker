@@ -78,6 +78,9 @@ worker args files =
                        Left x -> usageerror x
                        Right x -> return x
 
+       when (files == [])
+            (usageerror "One or more files, or \"-\", must be specified")
+
        files_scan <- if files == ["-"]
                         then readFileList (readNull runinfo)
                         else return files

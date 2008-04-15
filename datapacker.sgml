@@ -73,6 +73,21 @@
       </para>
 
       <variablelist>
+        <varlistentry>
+          <term>-0</term>
+          <term>--null</term>
+          <listitem><para>
+              When reading a list of files from standard input (see
+              FILE SPECIFICATION below), expect the input to be
+              separated by NULL (ASCII 0) characters instead of one
+              per line.  Especially useful with <command>find
+                -print0</command>.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        
+
         <varlistentry><term>-1</term>
           <listitem><para>Disable most multithreading operations and use
 	    solely a single-connection
@@ -178,6 +193,31 @@
 	      the User Interfaces section.</para>
 	    </listitem>
 	  </varlistentry>
+        <varlistentry>
+          <term>-b <replaceable>FORMAT</replaceable></term>
+          <term>--binfmt=<replaceable>FORMAT</replaceable></term>
+          <listitem>
+            <para>
+              Defines the output format for the bin name.  This format
+              is given as a <literal>%d</literal> input to a function
+              that interprets it as
+              <application>printf</application>(3) would.
+              This can be useful both to define the name and the
+              location of your bins.  When running &datapacker; with
+              certain arguments, the bin format can be taken to be a
+              directory in which files in that bin are linked.  The
+              default is <literal>%03d</literal>, which outputs
+              integers with leading zeros to make all bin names at
+              least three characters wide.
+            </para>
+            <para>
+              Other useful variants could include
+              <literal>destdir/%d</literal> to put the string
+              <literal>"destdir/</literal> in front of the bin number,
+              which is rendered without leading zeros.
+            </para>
+          </listitem>
+        </varlistentry>
       </variablelist>
     </refsect1>
     <refsect1>
