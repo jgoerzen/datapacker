@@ -64,11 +64,12 @@ worker args files =
                        Right x -> x
 
        results <- scan runinfo files
-       mapM_ printResult results
+       let numberedResults = zip [1..] (map (map snd) results)
+       mapM_ printResult numberedResults
 
-printResult :: Result -> IO ()
-printResult (bin, fp) =
-    printf "%03d\t%f\n" bin fp
+printResult :: (Integer, [FilePath]) -> IO ()
+printResult (bin, fpl) =
+    mapM_ (\fp -> printf "%03d\t%f\n" bin fp) fpl
    
 parseArgs args files =
     do size <- case lookup "s" args of
