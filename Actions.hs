@@ -17,6 +17,7 @@ runAction ri resultlist =
     case action ri of
       Print -> mapM_ (action_print ri) resultlist
       PrintFull -> action_printfull ri resultlist
+      Print0 -> action_print0 ri resultlist
       _ -> fail "Action not yet implemented"
 
 formatBin :: RunInfo -> Integer -> String
@@ -31,3 +32,10 @@ action_printfull ri =
     putStr . unlines . map toLine
     where toLine (bin, files) =
               formatBin ri bin ++ "\t" ++ (concat . intersperse "\t" $ files)
+
+action_print0 :: RunInfo -> [(Integer, [FilePath])] -> IO ()
+action_print0 ri =
+    putStr . concatMap toLine
+    where toLine (bin, files) = concatMap (fmtFile (formatBin ri bin)) files
+          fmtFile binstr file =
+              binstr ++ "\0" ++ file ++ "\0"
