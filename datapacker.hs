@@ -34,13 +34,15 @@ import Types
 import Text.Printf
 import Scan
 
+main :: IO ()
 main = 
     do updateGlobalLogger "" (setLevel INFO)
        argv <- getArgs
        case getOpt RequireOrder options argv of
          (o, n, []) -> worker o n
          (_, _, errors) -> usageerror (concat errors) -- ++ usageInfo header options)
-       
+
+options :: [OptDescr (String, String)]       
 options = [Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
            Option "p" ["preserve-order"] (NoArg ("p", ""))
                   "Don't reorder files for maximum packing",
@@ -52,6 +54,7 @@ options = [Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
 --                  "Input items terminated by null character",
            Option "" ["help"] (NoArg ("help", "")) "Display this help"]
 
+worker :: [(String, String)] -> [FilePath] -> IO ()
 worker args files =
     do when (lookup "help" args == Just "") $ usageerror ""
        when (lookup "d" args == Just "") 
@@ -59,7 +62,7 @@ worker args files =
        handler <- streamHandler stderr DEBUG
        updateGlobalLogger "" (setHandlers [handler])
        
-       runinfo <- case parseArgs args files of
+       runinfo <- case parseArgs args of
                        Left x -> usageerror x
                        Right x -> return x
 
@@ -71,7 +74,8 @@ printResult :: (Integer, [FilePath]) -> IO ()
 printResult (bin, fpl) =
     mapM_ (\fp -> printf "%03d\t%s\n" bin fp) fpl
    
-parseArgs args files =
+parseArgs :: [(String, String)] -> Either String RunInfo
+parseArgs args =
     do size <- case lookup "s" args of
                  Nothing -> fail "Missing required argument --size"
                  Just x -> parseNumInt binaryOpts True x
@@ -83,11 +87,13 @@ parseArgs args files =
                   Just _ -> True
        return $ RunInfo {binSize = size, firstBinSize = first,
                          preserveOrder = po}
-    
+
+usageerror :: String -> IO t
 usageerror errormsg =
     do putStrLn errormsg
        putStrLn (usageInfo header options)
        exitFailure
 
+header :: String
 header = "Usage: datapacker [options] --size=n inputfiles\n\n\
          \Available options are:\n"
