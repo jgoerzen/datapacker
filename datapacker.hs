@@ -72,11 +72,9 @@ printResult (bin, fpl) =
     mapM_ (\fp -> printf "%03d\t%f\n" bin fp) fpl
    
 parseArgs args files =
-    do (size::Integer) <- case lookup "s" args of
+    do size <- case lookup "s" args of
                  Nothing -> fail "Missing required argument --size"
-                 Just x -> case parseNumInt binaryOpts True x of
-                             Left x -> fail $ "--size: " ++ x
-                             Right y -> return y
+                 Just x -> parseNumInt binaryOpts True x
        first <- case lookup "S" args of
                   Nothing -> return size
                   Just x -> parseNumInt binaryOpts True x
