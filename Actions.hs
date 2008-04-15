@@ -68,18 +68,22 @@ action_link func ri =
 
 action_exec :: String -> RunInfo -> [(Integer, [FilePath])] -> IO ()
 action_exec cmd ri inp =
-    do shell <- getShell
-       mapM_ (execCommand shell) inp
-    where execCommand sh (bin, fpl) = 
-              mapM_ (execCommand' sh (formatBin ri bin)) fpl
-          execCommand' sh bin fp =
+    do baseenv <- getEnvironment
+       let shell = case lookup "SHELL" baseenv of
+                     Nothing -> "/bin/sh"
+                     Just x -> x
+       let useenv = filter (\x -> fst x `notElem` ["DATAPACKERBIN",
+                                                   "DATAPACKERFILE"]) baseenv
+       mapM_ (execCommand shell useenv) inp
+    where execCommand sh env (bin, fpl) = 
+              mapM_ (execCommand' sh env (formatBin ri bin)) fpl
+          execCommand' sh env bin fp =
               do ph <- runProcess sh ["-c", cmd] Nothing 
-                       (Just [("DATAPACKERBIN", bin),
-                              ("DATAPACKERFILE", fp)])
+                       (Just $ env ++ [("DATAPACKERBIN", bin),
+                                       ("DATAPACKERFILE", fp)])
                        Nothing Nothing Nothing 
                  ec <- waitForProcess ph
                  when (ec /= ExitSuccess)
                       (fail $ "action_exec: command failed on " ++ show fp ++ 
                             ": " ++ show ec)
-          getShell = catch (getEnv "SHELL") (\_ -> return "/bin/sh") 
                    
