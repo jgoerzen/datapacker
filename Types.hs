@@ -12,8 +12,8 @@ module Types where
 data RunInfo = 
     RunInfo {binSize :: Integer,
              firstBinSize :: Integer,
-             preserveOrder :: Bool}
---             readNull :: Bool}
+             preserveOrder :: Bool,
+             readNull :: Bool}
     deriving (Eq, Ord, Read, Show)
 
 -- (Size, filepath)

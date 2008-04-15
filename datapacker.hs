@@ -33,6 +33,7 @@ import Control.Monad
 import Types
 import Text.Printf
 import Scan
+import Data.List.Utils(split)
 
 main :: IO ()
 main = 
@@ -50,8 +51,8 @@ options = [Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
                   "Size of each output bin",
            Option "S" ["size-first"] (ReqArg (stdRequired "S") "SIZE")
                   "Override size of first output bin",
---           Option "0" ["null"] (NoArg ("0", ""))
---                  "Input items terminated by null character",
+           Option "0" ["null"] (NoArg ("0", ""))
+                  "Input items terminated by null character",
            Option "" ["help"] (NoArg ("help", "")) "Display this help"]
 
 worker :: [(String, String)] -> [FilePath] -> IO ()
@@ -66,9 +67,21 @@ worker args files =
                        Left x -> usageerror x
                        Right x -> return x
 
-       results <- scan runinfo files
+       files_scan <- if files == ["-"]
+                        then readFileList (readNull runinfo)
+                        else return files
+
+       results <- scan runinfo files_scan
        let numberedResults = zip [1..] (map (map snd) results)
        mapM_ printResult numberedResults
+
+readFileList :: Bool -> IO [FilePath]
+readFileList nullsep =
+    do c <- getContents
+       return (splitfunc c)
+    where splitfunc 
+              | nullsep = split "\0"
+              | otherwise = lines
 
 printResult :: (Integer, [FilePath]) -> IO ()
 printResult (bin, fpl) =
@@ -85,15 +98,20 @@ parseArgs args =
        let po = case lookup "p" args of
                   Nothing -> False
                   Just _ -> True
+       let n = case lookup "0" args of
+                 Nothing -> False
+                 Just _ -> True
        return $ RunInfo {binSize = size, firstBinSize = first,
-                         preserveOrder = po}
+                         preserveOrder = po, readNull = n}
 
 usageerror :: String -> IO t
 usageerror errormsg =
     do putStrLn errormsg
        putStrLn (usageInfo header options)
+       putStrLn "If the single value \"-\" is given for inputfiles, the list of files"
+       putStrLn "is read from stdin."
        exitFailure
 
 header :: String
-header = "Usage: datapacker [options] --size=n inputfiles\n\n\
+header = "\nUsage: datapacker [options] --size=n inputfiles\n\n\
          \Available options are:\n"
