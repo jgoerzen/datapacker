@@ -5,14 +5,42 @@ all: setup			# GHC build
 	./setup configure
 	./setup build
 
-doc: lib/dfs.html/index.html lib/dfs.pdf lib/dfs.ps lib/dfs.txt
-
 hugsbuild: setup
 	./setup configure --hugs
 	./setup build
 
 setup: Setup.lhs datapacker.cabal
 	ghc -package Cabal Setup.lhs -o setup
+
+doc: man html pdf txt
+
+.PHONY: man
+man: datapacker.1
+
+.PHONY: html
+html: datapacker.html
+
+.PHONY: pdf
+pdf: datapacker.pdf
+
+.PHONY: txt
+txt: datapacker.txt
+
+datapacker.html: datapacker.sgml
+	docbook2html -u datapacker.sgml
+
+datapacker.ps: datapacker.1
+	man -t -l datapacker.1 > datapacker.ps
+
+datapacker.pdf: datapacker.ps
+	ps2pdf14 datapacker.ps
+
+datapacker.txt: datapacker.1
+	groff -Tascii -man datapacker.1 | sed $$'s/.\b//g' > datapacker.txt
+
+datapacker.1: datapacker.sgml
+	docbook2man datapacker.sgml
+	docbook2man datapacker.sgml
 
 clean: clean-code clean-doc
 
@@ -24,6 +52,4 @@ clean-code:
 	-rm -f `find . -name "*.cm*"`
 
 clean-doc:
-	-cd doc && scons -c && scons -c html pdf text ps
-	-rm -rf doc/.sconsign* .depend test
-	-rm -f doc/manpage* doc/*.1
+	-rm -f *.1 *.ps *.pdf *.txt *.links *.refs *.html
