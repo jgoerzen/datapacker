@@ -20,7 +20,9 @@ Description: FIXME
  FIXME
  .
  FIXME
-Build-Depends: unix, MissingH>=1.0.0, mtl, base, filepath, directory, hslogger
+Build-Depends: unix, MissingH>=1.0.0, mtl, base, filepath, directory,
+               hslogger, process
+
 
 Executable: datapacker
 Main-Is: datapacker.hs

@@ -14,6 +14,10 @@ import Data.List
 import System.FilePath
 import System.Posix.Files
 import System.Directory
+import System.Process
+import System.Environment
+import System.Exit
+import Control.Monad
 
 runAction :: RunInfo -> [(Integer, [FilePath])] -> IO ()
 runAction ri resultlist =
@@ -23,7 +27,7 @@ runAction ri resultlist =
       Print0 -> action_print0 ri resultlist
       Hardlink -> action_hardlink ri resultlist
       Symlink -> action_symlink ri resultlist
-      _ -> fail "Action not yet implemented"
+      Exec x -> action_exec x ri resultlist
 
 formatBin :: RunInfo -> Integer -> String
 formatBin ri bin = printf (binFmt ri) bin
@@ -61,3 +65,21 @@ action_link func ri =
           makeLink' bin fp =
               do createDirectoryIfMissing False bin
                  func fp (bin ++ "/" ++ takeFileName fp)
+
+action_exec :: String -> RunInfo -> [(Integer, [FilePath])] -> IO ()
+action_exec cmd ri inp =
+    do shell <- getShell
+       mapM_ (execCommand shell) inp
+    where execCommand sh (bin, fpl) = 
+              mapM_ (execCommand' sh (formatBin ri bin)) fpl
+          execCommand' sh bin fp =
+              do ph <- runProcess sh ["-c", cmd] Nothing 
+                       (Just [("DATAPACKERBIN", bin),
+                              ("DATAPACKERFILE", fp)])
+                       Nothing Nothing Nothing 
+                 ec <- waitForProcess ph
+                 when (ec /= ExitSuccess)
+                      (fail $ "action_exec: command failed on " ++ show fp ++ 
+                            ": " ++ show ec)
+          getShell = catch (getEnv "SHELL") (\_ -> return "/bin/sh") 
+                   
