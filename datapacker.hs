@@ -44,19 +44,20 @@ main =
          (_, _, errors) -> usageerror (concat errors) -- ++ usageInfo header options)
 
 options :: [OptDescr (String, String)]       
-options = [Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
-           Option "p" ["preserve-order"] (NoArg ("p", ""))
-                  "Don't reorder files for maximum packing",
-           Option "s" ["size"] (ReqArg (stdRequired "s") "SIZE")
-                  "Size of each output bin",
-           Option "S" ["size-first"] (ReqArg (stdRequired "S") "SIZE")
-                  "Override size of first output bin",
+options = [
            Option "0" ["null"] (NoArg ("0", ""))
                   "Input items terminated by null character",
            Option "b" ["binfmt"] (ReqArg (stdRequired "b") "FORMAT")
                   "Gives bin name format in printf style.\n\
                   \Tip: this can include a directory.\n\
                   \default: %03d",
+           Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
+           Option "p" ["preserve-order"] (NoArg ("p", ""))
+                  "Don't reorder files for maximum packing",
+           Option "s" ["size"] (ReqArg (stdRequired "s") "SIZE")
+                  "Size of each output bin",
+           Option "S" ["size-first"] (ReqArg (stdRequired "S") "SIZE")
+                  "Override size of first output bin",
 {-           Option "a" ["action"] (ReqArg (stdRequired "a") "ACTION")
                   "Give action for output.  Options are:\n\
                   \print     print each record with a newline after [default]\n\
