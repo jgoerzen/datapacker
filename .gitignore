@@ -1,0 +1,8 @@
+*.hi
+*.ho
+*.o
+datapacker.1
+dist
+manpage.links
+manpage.refs
+setup
