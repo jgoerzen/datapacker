@@ -31,9 +31,9 @@ import Data.List
 import System.Exit
 import Control.Monad
 import Types
-import Text.Printf
 import Scan
 import Data.List.Utils(split)
+import Actions
 
 main :: IO ()
 main = 
@@ -91,7 +91,7 @@ worker args files =
 
        results <- scan runinfo files_scan
        let numberedResults = zip [1..] (map (map snd) results)
-       mapM_ (printResult runinfo) numberedResults
+       runAction runinfo numberedResults
 
 readFileList :: Bool -> IO [FilePath]
 readFileList nullsep =
@@ -101,10 +101,6 @@ readFileList nullsep =
               | nullsep = filter (/= "") . split "\0"
               | otherwise = lines
 
-printResult :: RunInfo -> (Integer, [FilePath]) -> IO ()
-printResult ri (bin, fpl) =
-    mapM_ (\fp -> printf (binFmt ri ++ "\t%s\n") bin fp) fpl
-   
 parseArgs :: [(String, String)] -> Either String RunInfo
 parseArgs args =
     do size <- case lookup "s" args of
