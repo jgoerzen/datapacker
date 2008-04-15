@@ -84,6 +84,6 @@ action_exec cmd ri inp =
                        Nothing Nothing Nothing 
                  ec <- waitForProcess ph
                  when (ec /= ExitSuccess)
-                      (fail $ "action_exec: command failed on " ++ show fp ++ 
+                      (fail $ "action_exec: command failed on " ++ fp ++ 
                             ": " ++ show ec)
                    
