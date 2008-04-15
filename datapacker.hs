@@ -22,14 +22,17 @@ Written by John Goerzen, jgoerzen\@complete.org
 
 import System.Log.Logger
 import System.Log.Handler.Simple
-import System.IO(stdout)
+import System.IO(stderr)
 import System.Console.GetOpt.Utils
 import System.Console.GetOpt
+import System.Environment
+import Data.Quantity
 import Data.List
 import System.Exit
 import Control.Monad
 import Types
 import Text.Printf
+import Scan
 
 main = 
     do updateGlobalLogger "" (setLevel INFO)
@@ -63,8 +66,8 @@ worker args files =
        results <- scan runinfo files
        mapM_ printResult results
 
-printResults :: Result -> IO ()
-printResults (bin, fp) =
+printResult :: Result -> IO ()
+printResult (bin, fp) =
     printf "%03d\t%f\n" bin fp
    
 parseArgs args files =
@@ -78,7 +81,7 @@ parseArgs args files =
                   Nothing -> False
                   Just _ -> True
        return $ RunInfo {binSize = size, firstBinSize = first,
-                         preserveOrder = po, fileList = files}
+                         preserveOrder = po}
     
 usageerror errormsg =
     do putStrLn errormsg
