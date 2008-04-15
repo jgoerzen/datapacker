@@ -61,7 +61,7 @@ worker args files =
        
        runinfo <- case parseArgs args files of
                        Left x -> usageerror x
-                       Right x -> x
+                       Right x -> return x
 
        results <- scan runinfo files
        let numberedResults = zip [1..] (map (map snd) results)
@@ -72,12 +72,14 @@ printResult (bin, fpl) =
     mapM_ (\fp -> printf "%03d\t%f\n" bin fp) fpl
    
 parseArgs args files =
-    do size <- case lookup "s" args of
-                 Nothing -> Left "Missing required argument --size"
-                 Just x -> parseNum binaryOpts True x
+    do (size::Integer) <- case lookup "s" args of
+                 Nothing -> fail "Missing required argument --size"
+                 Just x -> case parseNumInt binaryOpts True x of
+                             Left x -> fail $ "--size: " ++ x
+                             Right y -> return y
        first <- case lookup "S" args of
-                  Nothing -> size
-                  Just x -> parseNum binaryOpts True x
+                  Nothing -> return size
+                  Just x -> parseNumInt binaryOpts True x
        let po = case lookup "p" args of
                   Nothing -> False
                   Just _ -> True
