@@ -53,6 +53,17 @@ options = [Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
                   "Override size of first output bin",
            Option "0" ["null"] (NoArg ("0", ""))
                   "Input items terminated by null character",
+           Option "b" ["binfmt"] (ReqArg (stdRequired "b") "FORMAT")
+                  "Gives bin name format in printf style.\n\
+                  \Tip: this can include a directory.\n\
+                  \default: %03d",
+{-           Option "a" ["action"] (ReqArg (stdRequired "a") "ACTION")
+                  "Give action for output.  Options are:\n\
+                  \print     print each record with a newline after [default]\n\
+                  \print0    print each record with NULL after\n\
+                  \exec:CMD  Execute CMD in the shell for each record\n\
+                  \hardlink  Hard link items into bins\n\
+                  \symlink   Symlink items into bins" -}
            Option "" ["help"] (NoArg ("help", "")) "Display this help"]
 
 worker :: [(String, String)] -> [FilePath] -> IO ()
@@ -73,7 +84,7 @@ worker args files =
 
        results <- scan runinfo files_scan
        let numberedResults = zip [1..] (map (map snd) results)
-       mapM_ printResult numberedResults
+       mapM_ (printResult runinfo) numberedResults
 
 readFileList :: Bool -> IO [FilePath]
 readFileList nullsep =
@@ -83,9 +94,9 @@ readFileList nullsep =
               | nullsep = filter (/= "") . split "\0"
               | otherwise = lines
 
-printResult :: (Integer, [FilePath]) -> IO ()
-printResult (bin, fpl) =
-    mapM_ (\fp -> printf "%03d\t%s\n" bin fp) fpl
+printResult :: RunInfo -> (Integer, [FilePath]) -> IO ()
+printResult ri (bin, fpl) =
+    mapM_ (\fp -> printf (binFmt ri ++ "\t%s\n") bin fp) fpl
    
 parseArgs :: [(String, String)] -> Either String RunInfo
 parseArgs args =
@@ -101,8 +112,11 @@ parseArgs args =
        let n = case lookup "0" args of
                  Nothing -> False
                  Just _ -> True
+       let b = case lookup "b" args of
+                 Nothing -> "%03d"
+                 Just x -> x
        return $ RunInfo {binSize = size, firstBinSize = first,
-                         preserveOrder = po, readNull = n}
+                         preserveOrder = po, readNull = n, binFmt = b}
 
 usageerror :: String -> IO t
 usageerror errormsg =

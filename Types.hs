@@ -13,7 +13,8 @@ data RunInfo =
     RunInfo {binSize :: Integer,
              firstBinSize :: Integer,
              preserveOrder :: Bool,
-             readNull :: Bool}
+             readNull :: Bool,
+             binFmt :: String}
     deriving (Eq, Ord, Read, Show)
 
 -- (Size, filepath)
