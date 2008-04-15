@@ -49,10 +49,12 @@ options = [
                   "Input items terminated by null character",
            Option "a" ["action"] (ReqArg (stdRequired "a") "ACTION")
                   "Give action for output.  Options are:\n\
-                  \print     print each record with a newline after [default]\n\
+                  \print     print each record with a newline\n\
+                  \          after [default]\n\
                   \printfull print one line for each bin\n\
                   \print0    print each record with NULL after\n\
-                  \exec:CMD  Execute CMD in the shell for each record\n\
+                  \exec:CMD  Execute CMD in the shell for each\n\
+                  \record\n\
                   \hardlink  Hard link items into bins\n\
                   \symlink   Symlink items into bins",
            Option "b" ["binfmt"] (ReqArg (stdRequired "b") "FORMAT")
@@ -120,8 +122,20 @@ parseArgs args =
        let b = case lookup "b" args of
                  Nothing -> "%03d"
                  Just x -> x
+       a <- case lookup "a" args of
+              Nothing -> return Print
+              Just "print" -> return Print
+              Just "printfull" -> return PrintFull
+              Just "print0" -> return Print0
+              Just "hardlink" -> return Hardlink
+              Just "symlink" -> return Symlink
+              Just x -> 
+                  if "exec:" `isPrefixOf` x
+                     then return (Exec (drop 5 x))
+                     else fail $ "Unknown action: " ++ show x
        return $ RunInfo {binSize = size, firstBinSize = first,
-                         preserveOrder = po, readNull = n, binFmt = b}
+                         preserveOrder = po, readNull = n, binFmt = b,
+                         action = a}
 
 usageerror :: String -> IO t
 usageerror errormsg =

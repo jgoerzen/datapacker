@@ -18,7 +18,7 @@ data RunInfo =
              preserveOrder :: Bool,
              readNull :: Bool,
              binFmt :: String,
-             action :: String}
+             action :: Action}
     deriving (Eq, Ord, Read, Show)
 
 -- (Size, filepath)
