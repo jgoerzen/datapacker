@@ -20,9 +20,6 @@ Written by John Goerzen, jgoerzen\@complete.org
 
 -}
 
-import System.Log.Logger
-import System.Log.Handler.Simple
-import System.IO(stdout)
 import System.Console.GetOpt.Utils
 import System.Console.GetOpt
 import Data.List
@@ -30,14 +27,12 @@ import System.Exit
 import Control.Monad
 
 main = 
-    do updateGlobalLogger "" (setLevel INFO)
-       argv <- getArgs
+    do argv <- getArgs
        case getOpt RequireOrder options argv of
          (o, n, []) -> worker o n
          (_, _, errors) -> usageerror (concat errors) -- ++ usageInfo header options)
        
-options = [Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
-           Option "p" ["preserve-order"] (NoArg ("p", ""))
+options = [Option "p" ["preserve-order"] (NoArg ("p", ""))
                   "Don't reorder files for maximum packing",
            Option "s" ["size"] (ReqArg (stdRequired "s") "SIZE")
                   "Size of each output bin",
@@ -47,10 +42,6 @@ options = [Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
 
 worker args othern =
     do when (lookup "help" args == Just "") $ usageerror ""
-       when (lookup "d" args == Just "") 
-            (updateGlobalLogger "" (setLevel DEBUG))
-       handler <- streamHandler stdout DEBUG
-       updateGlobalLogger "" (setHandlers [handler])
        
        initDirs
        let commandname = head cmdargs
