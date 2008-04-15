@@ -69,7 +69,9 @@
     <refsect1>
       <title>Options</title>
       <para>
-        Here are the command-line options you may set for &datapacker;.
+        Here are the command-line options you may set for
+        &datapacker;.  Please note that <option>-s</option> and at
+        least one file (see FILE SPECIFICATION below) is mandatory.
       </para>
 
       <variablelist>
@@ -111,8 +113,141 @@
             </para>
           </listitem>
         </varlistentry>
+
+        <varlistentry>
+          <term>-d</term>
+          <term>--debug</term>
+          <listitem>
+            <para>
+              Enable debug mode.  This is here for future expansion
+              and does not currently have any effect.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>--help</term>
+          <listitem>
+            <para>
+              Display brief usage information and exit.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>-p</term>
+          <term>--preserve-order</term>
+          <listitem>
+            <para>
+              Normally, &datapacker; uses an efficient algorithm that
+              tries to rearrange files such that the number of bins
+              required is minimized.  Sometimes you may instead wish
+              to preserve the ordering of files at the expense of
+              potentially using more bins.  In these cases, you would
+              want to use this option.
+            </para>
+            <para>
+              As an example of such a situation: perhaps you have
+              taken one photo a day for several years.  You would like
+              to archive these photos to CD, but you want them to be
+              stored in chronological order.  You have named the files
+              such that the names indicate order, so you can pass the
+              file list to &datapacker; using <option>-p</option> to
+              preserve the ordering in your bins.  Thus, bin 1 will
+              contain the oldest files, bin 2 the second-oldest, and
+              so on.  If <option>-p</option> wasn't used, you might
+              use fewer CDs, but the photos would be spread out across
+              all CDs without preserving your chronological order.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>-s <replaceable>SIZE</replaceable></term>
+          <term>--size=<replaceable>SIZE</replaceable></term>
+          <listitem>
+            <para>
+              Gives the size of each bin in bytes.  Suffixes such as
+              "k", "m", "g", etc. may be used to indicate kilobytes,
+              megabytes, gigabytes, and so forth.  Numbers such as
+              <literal>1.5g</literal> are valid, and if needed, will
+              be rounded to the nearest possible integer value.
+            </para>
+            <para>
+              The size of the first bin may be overridden with
+              <option>-S</option>.
+            </para>
+            <para>
+              Here are the sizes of some commonly-used bins.  For each
+              item, I have provided you with both the underlying
+              recording capacity of the disc and a suggested value for
+              <option>-s</option>.  The suggested value for
+              <option>-s</option> is lower than the underlying
+              capacity because there is overhead imposed by the
+              filesystem stored on the disc.  You will perhaps find
+              that the suggested value for <option>-s</option> is
+              lower than optimal for discs that contain few large
+              files, and higher than desired for discs that contain
+              vast amounts of small files.
+            </para>
+            <itemizedlist>
+              <listitem><para>CD-ROM, 74-minute (standard): 650m / 600m</para>
+              </listitem>
+              <listitem><para>CD-ROM, 80-minute: 703m / 650m</para>
+              </listitem>
+              <listitem><para>CD-ROM, 90-minute: 790m / 740m</para>
+              </listitem>
+              <listitem><para>CD-ROM, 99-minute: 870m / 820m</para>
+              </listitem>
+              <listitem><para>DVD+-R: 4.377g / 4g</para>
+              </listitem>
+              <listitem><para>DVD+R, dual layer: 8.5g / 8g</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term>-S</term>
+          <term>--size-first</term>
+          <listitem>
+            <para>
+              The size of the first bin.  If not given, defaults to
+              the value given with <option>-s</option>.  This may be
+              useful if you will be using a mechanism outside
+              &datapacker; to add additional information to the first
+              bin: perhaps an index of which bin has which file, the
+              information necessary to make a CD bootable, etc.  You
+              may use the same suffixes as with <option>-s</option>
+              with this option.
+            </para>
+          </listitem>
+        </varlistentry>
       </variablelist>
+      <refsect2>
+        <title>File Specification</title>
+        <para>
+          After the options, you must supply one or more files to
+          consider for packing into bins.  Alternatively, instead of
+          listing files on the command line, you may list a single
+          hyphen (<literal>-</literal>), which tells &datapacker; to
+          read the list of files from standard input (stdin).
+        </para>
+        <para>
+          When reading files from standard input, it is assumed that
+          the list contains one distinct filename per line.  Seasoned
+          POSIX veterans will recognize the inherent limitations in
+          this format.  For that reason, when given
+          <option>-0</option> in conjunction with the single file
+          <literal>-</literal>, &datapacker; will instead expect, on
+          standard input, a list of files, each one terminated by an
+          ASCII NULL character.  Such a list can be easily generated
+          with <application>find</application>(1) using its
+          <option>-print0</option> option.
+        </para>
+      </refsect2>
     </refsect1>
+
     <refsect1>
       <title>User Interfaces</title>
       <para>&datapacker; has a pluggable user interface system that lets you choose how the
