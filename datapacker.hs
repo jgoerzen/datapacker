@@ -80,7 +80,7 @@ readFileList nullsep =
     do c <- getContents
        return (splitfunc c)
     where splitfunc 
-              | nullsep = split "\0"
+              | nullsep = filter (/= "") . split "\0"
               | otherwise = lines
 
 printResult :: (Integer, [FilePath]) -> IO ()
