@@ -24,7 +24,10 @@ Build-Depends: unix, MissingH>=1.0.0, mtl, base, filepath, directory, hslogger
 
 Executable: datapacker
 Main-Is: datapacker.hs
-GHC-Options: -O2
-Extensions: PatternSignatures
+-- GHC-Options: -O2 -Werror -fwarn-incomplete-patterns
+--              -fwarn-overlapping-patterns -fwarn-simple-patterns
+   
+GHC-Options: -O2 -Werror -Wall
+     
 -- Extensions: ExistentialQuantification, OverlappingInstances,
 --    UndecidableInstances
