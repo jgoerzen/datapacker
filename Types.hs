@@ -16,4 +16,4 @@ data RunInfo =
 --             readNull :: Bool}
     deriving (Eq, Ord, Read, Show)
 
-type Result = (Int, FilePath)
+type Result = (Integer, FilePath)

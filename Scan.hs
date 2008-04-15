@@ -23,7 +23,7 @@ scan ri fplist =
     where getSize f = 
               do s <- getFileStatus f
                  if isRegularFile s
-                    then return [(fileSize s, f)]
+                    then return [(fromIntegral (fileSize s), f)]
                     else do warningM "scan" $ "Warning: file " ++ f ++ " is not a regular file; skipping"
                             return []
                     
