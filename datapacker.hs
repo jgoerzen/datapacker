@@ -28,6 +28,8 @@ import System.Console.GetOpt
 import Data.List
 import System.Exit
 import Control.Monad
+import Types
+import Text.Printf
 
 main = 
     do updateGlobalLogger "" (setLevel INFO)
@@ -43,27 +45,27 @@ options = [Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
                   "Size of each output bin",
            Option "S" ["size-first"] (ReqArg (stdRequired "S") "SIZE")
                   "Override size of first output bin",
-           Option "0" ["null"] (NoArg ("0", ""))
-                  "Input items terminated by null character",
+--           Option "0" ["null"] (NoArg ("0", ""))
+--                  "Input items terminated by null character",
            Option "" ["help"] (NoArg ("help", "")) "Display this help"]
-
-data RunInfo = 
-    RunInfo {binSize :: Integer,
-             firstBinSize :: Integer,
-             preserveOrder :: Bool,
-             readNull :: Bool}
-    deriving (Eq, Ord, Read, Show)
 
 worker args files =
     do when (lookup "help" args == Just "") $ usageerror ""
        when (lookup "d" args == Just "") 
             (updateGlobalLogger "" (setLevel DEBUG))
-       handler <- streamHandler stdout DEBUG
+       handler <- streamHandler stderr DEBUG
        updateGlobalLogger "" (setHandlers [handler])
        
        runinfo <- case parseArgs args files of
                        Left x -> usageerror x
                        Right x -> x
+
+       results <- scan runinfo files
+       mapM_ printResult results
+
+printResults :: Result -> IO ()
+printResults (bin, fp) =
+    printf "%03d\t%f\n" bin fp
    
 parseArgs args files =
     do size <- case lookup "s" args of
