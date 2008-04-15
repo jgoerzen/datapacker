@@ -29,7 +29,10 @@ scan ri fplist =
                     
           bins = firstBinSize ri : repeat (binSize ri)
 
-binify_po :: (Num s, Ord s) => [s] -> [(s, a)] -> [[(s, a)]]
+binify_po :: (Num s, Ord s) => 
+             [s]                -- ^ The sizes of bins.  List may be infinite.
+          -> [(s, a)]           -- ^ (size, object) pairs
+          -> [[(s, a)]]         -- ^ Results
 binify_po _ [] = []
 binify_po (thisbinsize:otherbins) sizes =
     let thisset = fillBin 0 sizes
