@@ -13,21 +13,23 @@ import Control.Monad(liftM)
 import System.Posix.Files
 import System.Log.Logger
 
-scan :: RunInfo -> [FilePath] -> IO [Result]
+scan :: RunInfo -> [FilePath] -> IO [[Result]]
 scan ri fplist =
     do sizes <- (liftM concat $ mapM getSize fplist)
        if preserveOrder ri
-          then binify_po bins sizes
+          then return $ binify_po bins sizes
 --          else binify_opt bins sizes
-          else error "Not done"
+          else fail "Not done"
     where getSize f = 
               do s <- getFileStatus f
                  if isRegularFile s
                     then return [(fileSize s, f)]
-                    else warningM "scan" $ "Warning: file " ++ f ++ " is not a regular file; skipping"
+                    else do warningM "scan" $ "Warning: file " ++ f ++ " is not a regular file; skipping"
+                            return []
                     
           bins = firstBinSize ri : repeat (binSize ri)
 
+binify_po :: (Num s, Ord s) => [s] -> [(s, a)] -> [[(s, a)]]
 binify_po _ [] = []
 binify_po (thisbinsize:otherbins) sizes =
     let thisset = fillBin 0 sizes
