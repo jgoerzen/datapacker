@@ -69,9 +69,7 @@
     <refsect1>
       <title>Options</title>
       <para>
-	Most configuration is done via the configuration file.  Nevertheless,
-	there are a few command-line options that you may set for
-	&OfflineIMAP;.
+        Here are the command-line options you may set for &datapacker;.
       </para>
 
       <variablelist>
@@ -85,7 +83,7 @@
 	  </para></listitem>
 	</varlistentry>
 	<varlistentry><term>-P <replaceable>profiledir</replaceable></term>
-	  <listitem><para>Sets &OfflineIMAP; into profile mode.  The program
+	  <listitem><para>Sets &datapacker; into profile mode.  The program
 	    will create <replaceable>profiledir</replaceable>
 	    (it must not already exist).  As it runs, Python profiling 
 	    information
@@ -184,7 +182,7 @@
     </refsect1>
     <refsect1>
       <title>User Interfaces</title>
-      <para>&OfflineIMAP; has a pluggable user interface system that lets you choose how the
+      <para>&datapacker; has a pluggable user interface system that lets you choose how the
 	program communicates information to you.  There are two graphical
 	interfaces, two terminal interfaces, and two noninteractive interfaces
 	suitable for scripting or logging purposes.  The
@@ -198,9 +196,9 @@
 	<title>Curses.Blinkenlights</title>
 	<para>
                 Curses.Blinkenlights is an interface designed to be sleek, fun to watch, and
-	  informative of the overall picture of what &OfflineIMAP;
+	  informative of the overall picture of what &datapacker;
 	  is doing.  I consider it to be the best general-purpose interface in
-	  &OfflineIMAP;.
+	  &datapacker;.
 	</para>
 	<para>
 	  Curses.Blinkenlights contains a row of
@@ -211,7 +209,7 @@
 	</para>
 	<para>
 	  Each light in the Blinkenlights interface represents a thread
-	  of execution -- that is, a particular task that &OfflineIMAP;
+	  of execution -- that is, a particular task that &datapacker;
 	  is performing right now.  The colors indicate what task
 	  the particular thread is performing, and are as follows:
 	</para>
@@ -326,7 +324,7 @@
       <refsect2>
 	<title>Noninteractive.Basic</title>
 	<para>
-	  Noninteractive.Basic is designed for situations in which &OfflineIMAP;
+	  Noninteractive.Basic is designed for situations in which &datapacker;
 	  will be run non-attended and the status of its execution will be
 	  logged.  You might use it, for instance, to have the system run
 	  automatically and
@@ -369,7 +367,7 @@
       <refsect2>
 	<title>Multiple Accounts with Mutt</title>
 	<para>
-	  This example shows you how to set up &OfflineIMAP; to
+	  This example shows you how to set up &datapacker; to
 	  synchronize multiple accounts with the mutt mail reader.
 	</para>
 	<para>
@@ -407,7 +405,7 @@ spoolfile=+Personal/INBOX</programlisting>
 
       <refsect2>
 	<title>UW-IMAPD and References</title>
-	<para>Some users with a UW-IMAPD server need to use &OfflineIMAP;'s
+	<para>Some users with a UW-IMAPD server need to use &datapacker;'s
 	  "reference" feature to get at their mailboxes, specifying a reference
 	  of "~/Mail" or "#mh/" depending on the configuration.  The below
 	  configuration from (originally from docwhat@gerf.org)
@@ -447,7 +445,7 @@ holdconnectionopen = no</programlisting>
 
       <refsect2>
 	<title>pythonfile Configuration File Option</title>
-	<para>You can have &OfflineIMAP;
+	<para>You can have &datapacker;
 	  load up a Python file before evaluating the
 	  configuration file options that are Python expressions.  This example
 	  is based on one supplied by Tommi Virtanen for this feature.
@@ -522,7 +520,7 @@ def test_mycmp():
 	  This number is guaranteed to be unique to a particular message
 	  <emphasis>forever</emphasis>.
 	  No other message in the same folder will ever get the same
-	  UID.  UIDs are an integral part of &OfflineIMAP;'s synchronization
+	  UID.  UIDs are an integral part of &datapacker;'s synchronization
 	  scheme; they are used to match up messages on your computer to
 	  messages on the server.
 	</para>
@@ -531,8 +529,8 @@ def test_mycmp():
 	  Sometimes, the UIDs on the server might get reset.  Usually this will
 	  happen if you delete and then recreate a folder.  When you create a
 	  folder, the server will often start the UID back from 1.  But
-	  &OfflineIMAP; might still have the UIDs from the previous folder by the
-	  same name stored.  &OfflineIMAP; will detect this condition and skip the
+	  &datapacker; might still have the UIDs from the previous folder by the
+	  same name stored.  &datapacker; will detect this condition and skip the
 	  folder.  This is GOOD, because it prevents data loss.
 	</para>
 
@@ -552,7 +550,7 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
 	  in <filename>~/.offlineimaprc</filename>).
 	</para>
 
-	<para>Next time you run &OfflineIMAP;, it will re-download
+	<para>Next time you run &datapacker;, it will re-download
 	  the folder with the
 	  new UIDs.  Note that the procedure specified above will lose any local
 	  changes made to the folder.
@@ -562,15 +560,15 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
 	  Some IMAP servers are broken and do not support UIDs properly.  If you
 	  continue to get this error for all your folders even after performing
 	  the above procedure, it is likely that your IMAP server falls into
-	  this category.  &OfflineIMAP; is incompatible with such servers.
-	  Using &OfflineIMAP; with them will not destroy any mail, but at the same time,
-	  it will not actually synchronize it either.  (&OfflineIMAP; will detect
+	  this category.  &datapacker; is incompatible with such servers.
+	  Using &datapacker; with them will not destroy any mail, but at the same time,
+	  it will not actually synchronize it either.  (&datapacker; will detect
 	  this condition and abort prior to synchronization.)
 	</para>
 	<para>
 	  This question comes up frequently on the
 	  <ulink
-	  url="http://lists.complete.org/offlineimap@complete.org/">&OfflineIMAP;
+	  url="http://lists.complete.org/offlineimap@complete.org/">&datapacker;
 	  mailing list</ulink>.  You can find a
 	  <ulink
 	  url="http://lists.complete.org/offlineimap@complete.org/2003/04/msg00012.html.gz">detailed
@@ -595,12 +593,12 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
       <title>Notes</title>
       <refsect2>
 	<title>Deleting Local Folders</title>
-	<para>&OfflineIMAP; does a two-way synchronization.  That is, if you
+	<para>&datapacker; does a two-way synchronization.  That is, if you
 	  make a change to the mail on the server, it will be propagated to your
 	  local copy, and vise-versa.  Some people might think that it would be
 	  wise to just delete all their local mail folders periodically.  If you
-	  do this with &OfflineIMAP;, remember to also remove your local status
-	  cache (<filename>~/.offlineimap</filename> by default).  Otherwise, &OfflineIMAP; will take
+	  do this with &datapacker;, remember to also remove your local status
+	  cache (<filename>~/.offlineimap</filename> by default).  Otherwise, &datapacker; will take
 	  this as an intentional deletion of many messages and will interpret
 	  your action as requesting them to be deleted from the server as well.
 	  (If you don't understand this, don't worry; you probably won't
@@ -610,9 +608,9 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
 
       <refsect2>
 	<title>Multiple Instances</title>
-	<para>&OfflineIMAP; is not designed to have several instances (for instance, a cron job and an interactive invocation) run over the same
+	<para>&datapacker; is not designed to have several instances (for instance, a cron job and an interactive invocation) run over the same
 	  mailbox simultaneously.  It will perform a check on startup and
-	  abort if another &OfflineIMAP; is already running.  If you need
+	  abort if another &datapacker; is already running.  If you need
 	  to schedule synchronizations, you'll probably find
 	  <property>autorefresh</property> settings more convenient than cron.
 	  Alternatively, you can set a separate <property>metadata</property>
@@ -624,15 +622,15 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
 	<title>Copying Messages Between Folders</title>
 	<para>
 	  Normally, when you copy a message between folders or add a new message
-	  to a folder locally, &OfflineIMAP;
+	  to a folder locally, &datapacker;
 	  will just do the right thing.  However, sometimes this can be tricky
 	  -- if your IMAP server does not provide the SEARCH command, or does
-	  not return something useful, &OfflineIMAP;
+	  not return something useful, &datapacker;
 	  cannot determine the new UID of the message.  So, in these rare
 	  instances, OfflineIMAP will upload the message to the IMAP server and
 	  delete it from your local folder.  Then, on your next sync, the
 	  message will be re-downloaded with the proper UID.
-	  &OfflineIMAP; makes sure that the message was properly uploaded before deleting it,
+	  &datapacker; makes sure that the message was properly uploaded before deleting it,
 	  so there should be no risk of data loss.
 	</para>
       </refsect2>
@@ -652,7 +650,7 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
 	<title>Bugs</title>
 	<para>
           Reports of bugs should be reported online at the
-          &OfflineIMAP; homepage.
+          &datapacker; homepage.
           Debian users are encouraged to instead use the
 	Debian
           bug-tracking system.
@@ -663,16 +661,16 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
     <refsect1 id="upgrading.4.0">
       <title>Upgrading to 4.0</title>
       <para>
-	If you are upgrading from a version of &OfflineIMAP; prior to
+	If you are upgrading from a version of &datapacker; prior to
 	3.99.12, you will find that you will get errors when
-	&OfflineIMAP; starts up (relating to ConfigParser or
+	&datapacker; starts up (relating to ConfigParser or
 	AccountHashGenerator) and the
 	configuration file.  This is because the config file format
 	had to change to accommodate new features in 4.0.  Fortunately,
 	it's not difficult to adjust it to suit.
       </para>
       <para>
-	First thing you need to do is stop any running &OfflineIMAP;
+	First thing you need to do is stop any running &datapacker;
 	instance, making sure first that it's synced all your mail.
 	Then, modify your
 	<filename>~/.offlineimaprc</filename> file.  You'll need to
@@ -684,12 +682,12 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
 	you need more assistance.
       </para>
       <para>
-	&OfflineIMAP;'s status directory area has also changed.
+	&datapacker;'s status directory area has also changed.
 	Therefore, you should delete everything in ~/.offlineimap as
 	well as your local mail folders.
       </para>
       <para>
-	When you start up &OfflineIMAP; 4.0, it will re-download all
+	When you start up &datapacker; 4.0, it will re-download all
 	your mail from the server and then you can continue using it
 	like normal.
       </para>
@@ -721,20 +719,20 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
 
       <para>imaplib.py comes from the Python dev tree and is licensed under
 	the GPL-compatible PSF license as stated in the file
-	<filename>COPYRIGHT</filename> in the &OfflineIMAP;
+	<filename>COPYRIGHT</filename> in the &datapacker;
          distribution.
       </para>
     </refsect1>
 
     <refsect1>
       <title>Author</title>
-      <para>&OfflineIMAP;, its libraries, documentation, and all included files, except where
+      <para>&datapacker;, its libraries, documentation, and all included files, except where
 	noted, was written by John Goerzen <email>jgoerzen@complete.org</email> and
 	copyright is held as stated in the COPYRIGHT section.
       </para>
 
       <para>
-	&OfflineIMAP; may be downloaded, and information found, from its
+	&datapacker; may be downloaded, and information found, from its
 	<ulink url="http://software.complete.org/offlineimap">homepage</ulink>.
       </para>
 
@@ -751,13 +749,13 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
       <title>History</title>
       <para>
 	Detailed history may be found in the file ChangeLog in the
-	&OfflineIMAP; distribution.  Feature and bug histories may be
+	&datapacker; distribution.  Feature and bug histories may be
 	found in the file debian/changelog which, despite its name, is
 	not really Debian-specific.  This section provides a large
 	overview.
       </para>
       <para>
-	Development on &OfflineIMAP; began on June 18, 2002.  Version
+	Development on &datapacker; began on June 18, 2002.  Version
 	1.0.0 was released three days later on June 21, 2002.  Point
 	releases followed, including speed optimizations and some
 	compatibility fixes.
@@ -771,12 +769,12 @@ rm -r ~/.offlineimap/Repository-<replaceable>RemoteRepositoryName</>/FolderValid
       <para>
 	Version 3.0.0 was released on July 11, 2002, and introduced
 	modular user interfaces and the first GUI interface for
-	&OfflineIMAP;.  This manual also was introduced with 3.0.0,
+	&datapacker;.  This manual also was introduced with 3.0.0,
 	along with many command-line options.  Version 3.1.0 was
 	released on July 21, adding the Noninteractive user
 	interfaces, profiling support, and several bugfixes.  3.2.0
 	was released on July 24, adding support for the Blinkenlights
-	GUI interface.  &OfflineIMAP; entered maintenance mode for
+	GUI interface.  &datapacker; entered maintenance mode for
 	awhile, as it had reached a feature-complete milestone in my
 	mind.
       </para>
