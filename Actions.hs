@@ -11,21 +11,28 @@ module Actions(runAction) where
 import Types
 import Text.Printf
 import Data.List
+import System.FilePath
+import System.Posix.Files
+import System.Directory
 
 runAction :: RunInfo -> [(Integer, [FilePath])] -> IO ()
 runAction ri resultlist =
     case action ri of
-      Print -> mapM_ (action_print ri) resultlist
+      Print -> action_print ri resultlist
       PrintFull -> action_printfull ri resultlist
       Print0 -> action_print0 ri resultlist
+      Hardlink -> action_hardlink ri resultlist
+      Symlink -> action_symlink ri resultlist
       _ -> fail "Action not yet implemented"
 
 formatBin :: RunInfo -> Integer -> String
 formatBin ri bin = printf (binFmt ri) bin
 
-action_print :: RunInfo -> (Integer, [FilePath]) -> IO ()
-action_print ri (bin, fpl) =
-    mapM_ (\fp -> putStrLn ((formatBin ri bin) ++ "\t" ++ fp)) fpl
+action_print :: RunInfo -> [(Integer, [FilePath])] -> IO ()
+action_print ri =
+    putStr . unlines . concatMap procBin
+    where procBin (bin, fp) = map (procLine (formatBin ri bin)) fp
+          procLine bin fp = bin ++ "\t" ++ fp
 
 action_printfull :: RunInfo -> [(Integer, [FilePath])] -> IO ()
 action_printfull ri =
@@ -39,3 +46,18 @@ action_print0 ri =
     where toLine (bin, files) = concatMap (fmtFile (formatBin ri bin)) files
           fmtFile binstr file =
               binstr ++ "\0" ++ file ++ "\0"
+
+action_hardlink :: RunInfo -> [(Integer, [FilePath])] -> IO ()
+action_hardlink = action_link createLink
+
+action_symlink :: RunInfo -> [(Integer, [FilePath])] -> IO ()
+action_symlink = action_link createSymbolicLink
+
+action_link :: (FilePath -> FilePath -> IO ()) -> RunInfo -> [(Integer, [FilePath])] -> IO ()
+action_link func ri =
+    mapM_ makeLink
+    where makeLink (bin, fpl) = 
+              mapM_ (makeLink' (formatBin ri bin)) fpl
+          makeLink' bin fp =
+              do createDirectoryIfMissing False bin
+                 func fp (bin ++ "/" ++ takeFileName fp)
