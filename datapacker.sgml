@@ -53,19 +53,18 @@
         them such that you use the minimum possible number of CDs or
         DVDs.
       </para>
+
+      <para>
+        In many cases, &datapacker; executes almost instantaneously.
+        Of particular note, the <literal>hardlink</literal> action
+        (see OPTIONS below) can be used to effectively copy data into
+        bins without having to actually copy the data at all.
+      </para>
       
       <para>
         &datapacker; is a tool in the traditional Unix style; it can
         be used in pipes and call other tools.
       </para>
-
-    <refsect1>
-      <title>Quick Start</title>
-      <para>
-        FIXME: write this
-      </para>
-    </refsect1>
-
 
     <refsect1>
       <title>Options</title>
@@ -363,9 +362,30 @@ datapacker '--action=exec:ls -l "${DATAPACKERFILE}"'
 
     <refsect1>
       <title>Examples</title>
-      <para>
-        FIXME: write
-      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            Put all JPEG images in <literal>~/Pictures</literal>
+            into bins (using hardlinks) under the pre-existing directory
+            <literal>~/bins</literal>, no more than 600MB per bin:
+          </para>
+          <programlisting>
+datapacker -b ~/bins/%03d -s 600m -a hardlink ~/Pictures/*.jpg
+          </programlisting>
+        </listitem>
+        <listitem>
+          <para>
+            Find all JPEG images in <literal>~/Pictures</literal> or
+            any subdirectory thereof, put them into bins (using
+            hardlinks) under the pre-existing directory
+            <literal>~/bins</literal>, no more than 600MB per bin:
+          </para>
+          <programlisting>
+find ~/Pictures -name "*.jpg" -print0 | \
+  datapacker -0 -b ~/bins/%03d -s 600m -a hardlink -
+          </programlisting>
+        </listitem>
+      </itemizedlist>
     </refsect1>
       
     <refsect1>
