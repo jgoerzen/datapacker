@@ -28,6 +28,7 @@
       <cmdsynopsis>
         <command>datapacker</command>
         <arg>-0</arg>
+        <arg>-a <replaceable>ACTION</replaceable></arg>
         <arg>-b <replaceable>FORMAT</replaceable></arg>
         <arg>-d</arg>
         <arg>-p</arg>
@@ -85,6 +86,118 @@
               per line.  Especially useful with <command>find
                 -print0</command>.
             </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>-a <replaceable>ACTION</replaceable></term>
+          <term>--action=<replaceable>ACTION</replaceable></term>
+          <listitem>
+            <para>
+              Defines what action to take with the matches.  Please
+              note that, with any action, the output will be sorted by
+              bin, with bin 1 first.  Possible
+              actions include:
+            </para>
+            <variablelist>
+              <varlistentry>
+                <term>print</term>
+                <listitem><para>Print one human-readable line per
+                    file.  Each line contains the bin number (in the
+                    format given by <option>-b</option>), an ASCII tab
+                    character, then the filename.
+                  </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>printfull</term>
+                <listitem><para>Print one semi-human-readable line per
+                    bin.  Each line contains the bin number, then a list
+                    of filenames to place in that bin,
+                    with an ASCII tab character after the
+                    bin number and between each filename.
+                  </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>print0</term>
+                <listitem>
+                  <para>
+                    For each file, output the bin number (according to the
+                    format given by <option>-b</option>), an ASCII
+                    NULL character, the filename, and another ASCII
+                    NULL character.  Ideal for use with <literal>xargs
+                      -0 -L 2</literal>.
+                  </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>exec:<replaceable>COMMAND</replaceable></term>
+                <listitem>
+                <para>
+                    For each file, execute the specified COMMAND via
+                    the shell.  The environment passed to COMMAND will
+                    contain two variables: DATAPACKERBIN will contain
+                    the bin number (formatted according to
+                    <option>-b</option>), and DATAPACKERFILE will
+                    contain the filename as supplied to &datapacker;.
+                    A nonzero exit code from any COMMAND will cause
+                    &datapacker; to terminate.  If COMMAND contains
+                    quotes, don't forget to quote the entire command,
+                    as in:
+                  </para>
+                  <programlisting>
+datapacker '--action=exec:ls -l "${DATAPACKERFILE}"'
+                  </programlisting>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>hardlink</term>
+                <listitem>
+                  <para>
+                    For each file, create a hardlink at
+                    <replaceable>bin</replaceable>/<replaceable>filename</replaceable>
+                    pointing to the original input filename.  Creates
+                    the directory <replaceable>bin</replaceable> as
+                    necessary.  Alternative locations and formats for
+                    <replaceable>bin</replaceable> can be specified
+                    with <option>-b</option>.  All bin directories and
+                    all input must reside on the same filesystem.
+                  </para>
+                  <para>
+                    After you are done processing the results of the
+                    bin, you may safely delete the bins without
+                    deleting original data.  Alternatively, you could
+                    leave the bins and delete the original data.
+                    Either approach will be workable.
+                  </para>
+                  <para>
+                    It is an error to attempt to make a hard link
+                    across filesystems, or to have two input files
+                    with the same filename in different paths.
+                    &datapacker; will exit on either of these situations.
+                  </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>symlink</term>
+                <listitem>
+                  <para>Like <option>hardlink</option>, but create
+                  symlinks instead.  Symlinks can span filesystems,
+                  but you will lose information if you remove the
+                  original (pre-bin) data.  Like
+                  <option>hardlink</option>, it is an error to have a
+                  single filename occur in multiple input directories
+                  with this option.
+                  </para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
           </listitem>
         </varlistentry>
 

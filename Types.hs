@@ -9,12 +9,16 @@ General Public License for more details.
 
 module Types where
 
+data Action = Print | PrintFull | Print0 | Exec String | Hardlink | Symlink
+            deriving (Eq, Ord, Read, Show)
+
 data RunInfo = 
     RunInfo {binSize :: Integer,
              firstBinSize :: Integer,
              preserveOrder :: Bool,
              readNull :: Bool,
-             binFmt :: String}
+             binFmt :: String,
+             action :: String}
     deriving (Eq, Ord, Read, Show)
 
 -- (Size, filepath)

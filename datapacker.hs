@@ -47,6 +47,14 @@ options :: [OptDescr (String, String)]
 options = [
            Option "0" ["null"] (NoArg ("0", ""))
                   "Input items terminated by null character",
+           Option "a" ["action"] (ReqArg (stdRequired "a") "ACTION")
+                  "Give action for output.  Options are:\n\
+                  \print     print each record with a newline after [default]\n\
+                  \printfull print one line for each bin\n\
+                  \print0    print each record with NULL after\n\
+                  \exec:CMD  Execute CMD in the shell for each record\n\
+                  \hardlink  Hard link items into bins\n\
+                  \symlink   Symlink items into bins",
            Option "b" ["binfmt"] (ReqArg (stdRequired "b") "FORMAT")
                   "Gives bin name format in printf style.\n\
                   \Tip: this can include a directory.\n\
@@ -58,13 +66,6 @@ options = [
                   "Size of each output bin",
            Option "S" ["size-first"] (ReqArg (stdRequired "S") "SIZE")
                   "Override size of first output bin",
-{-           Option "a" ["action"] (ReqArg (stdRequired "a") "ACTION")
-                  "Give action for output.  Options are:\n\
-                  \print     print each record with a newline after [default]\n\
-                  \print0    print each record with NULL after\n\
-                  \exec:CMD  Execute CMD in the shell for each record\n\
-                  \hardlink  Hard link items into bins\n\
-                  \symlink   Symlink items into bins" -}
            Option "" ["help"] (NoArg ("help", "")) "Display this help"]
 
 worker :: [(String, String)] -> [FilePath] -> IO ()
