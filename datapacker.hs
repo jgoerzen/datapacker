@@ -69,7 +69,7 @@ worker args files =
 
 printResult :: (Integer, [FilePath]) -> IO ()
 printResult (bin, fpl) =
-    mapM_ (\fp -> printf "%03d\t%f\n" bin fp) fpl
+    mapM_ (\fp -> printf "%03d\t%s\n" bin fp) fpl
    
 parseArgs args files =
     do size <- case lookup "s" args of
