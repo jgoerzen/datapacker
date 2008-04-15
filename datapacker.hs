@@ -38,29 +38,40 @@ options = [Option "p" ["preserve-order"] (NoArg ("p", ""))
                   "Size of each output bin",
            Option "S" ["size-first"] (ReqArg (stdRequired "S") "SIZE")
                   "Override size of first output bin",
+           Option "0" ["null"] (NoArg ("0", ""))
+                  "Input items terminated by null character",
            Option "" ["help"] (NoArg ("help", "")) "Display this help"]
 
-worker args othern =
-    do when (lookup "help" args == Just "") $ usageerror ""
-       
-       initDirs
-       let commandname = head cmdargs
-       case lookup commandname allCommands of
-         Just command -> 
-             do cp <- loadCP 
-                dbh <- connect
-                handleSqlError $ execcmd command (tail cmdargs) 
-                                   (GlobalInfo {gcp = cp, gdbh = dbh})
-                disconnect dbh
-         Nothing -> usageerror ("Invalid command name " ++ commandname)
-       where cmdargs = case commandargs of
-                         [] -> ["fetch"]
-                         x -> x
+data RunInfo = 
+    RunInfo {binSize :: Integer,
+             firstBinSize :: Integer,
+             preserveOrder :: Bool,
+             readNull :: Bool}
+    deriving (Eq, Ord, Read, Show)
 
+worker args files =
+    do when (lookup "help" args == Just "") $ usageerror ""
+       runinfo <- case parseArgs args files of
+                       Left x -> usageerror x
+                       Right x -> x
+   
+parseArgs args files =
+    do size <- case lookup "s" args of
+                 Nothing -> Left "Missing required argument --size"
+                 Just x -> parseNum binaryOpts True x
+       first <- case lookup "S" args of
+                  Nothing -> size
+                  Just x -> parseNum binaryOpts True x
+       let po = case lookup "p" args of
+                  Nothing -> False
+                  Just _ -> True
+       return $ RunInfo {binSize = size, firstBinSize = first,
+                         preserveOrder = po, fileList = files}
+    
 usageerror errormsg =
     do putStrLn errormsg
        putStrLn (usageInfo header options)
        exitFailure
 
-header = "Usage: datapacker [options] inputfiles\n\n\
+header = "Usage: datapacker [options] --size=n inputfiles\n\n\
          \Available options are:\n"
