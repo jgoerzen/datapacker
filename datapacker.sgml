@@ -138,19 +138,45 @@
                 <listitem>
                 <para>
                     For each file, execute the specified COMMAND via
-                    the shell.  The environment passed to COMMAND will
-                    contain two variables: DATAPACKERBIN will contain
-                    the bin number (formatted according to
-                    <option>-b</option>), and DATAPACKERFILE will
-                    contain the filename as supplied to &datapacker;.
+                    the shell.  The program COMMAND will be passed
+                    information on its command line as indicated below.
+                  </para>
+                  <para>
+                    It is an error if the generated command line for a
+                    given bin is too large for the system.
+                  </para>
+                  <para>
                     A nonzero exit code from any COMMAND will cause
                     &datapacker; to terminate.  If COMMAND contains
                     quotes, don't forget to quote the entire command,
                     as in:
                   </para>
                   <programlisting>
-datapacker '--action=exec:ls -l "${DATAPACKERFILE}"'
+datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
                   </programlisting>
+                  <para>
+                    The arguments to the given command will be:
+                  </para>
+                  <itemizedlist>
+                    <listitem><para>
+                        <literal>argv[0]</literal> ($0 in shell) will
+                        be the name of the shell used to invoke the
+                        command -- <literal>$SHELL</literal> or
+                        <literal>/bin/sh</literal>.
+                      </para>
+                    </listitem>
+                    <listitem><para>
+                        <literal>argv[1]</literal> ($1 in shell) will
+                        be the bin number, formatted according to
+                        <option>-b</option>.</para>
+                    </listitem>
+                    <listitem><para>
+                        <literal>argv[2]</literal> and on ($2 and on
+                        in shell) will be the files to place in that
+                        bin
+                      </para>
+                    </listitem>
+                  </itemizedlist>
                 </listitem>
               </varlistentry>
 

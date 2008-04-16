@@ -72,18 +72,12 @@ action_exec cmd ri inp =
        let shell = case lookup "SHELL" baseenv of
                      Nothing -> "/bin/sh"
                      Just x -> x
-       let useenv = filter (\x -> fst x `notElem` ["DATAPACKERBIN",
-                                                   "DATAPACKERFILE"]) baseenv
-       mapM_ (execCommand shell useenv) inp
-    where execCommand sh env (bin, fpl) = 
-              mapM_ (execCommand' sh env (formatBin ri bin)) fpl
-          execCommand' sh env bin fp =
-              do ph <- runProcess sh ["-c", cmd] Nothing 
-                       (Just $ env ++ [("DATAPACKERBIN", bin),
-                                       ("DATAPACKERFILE", fp)])
-                       Nothing Nothing Nothing 
+       mapM_ (execCommand shell) inp
+    where execCommand sh (bin, fpl) = 
+              do ph <- runProcess sh (["-c", cmd, sh, formatBin ri bin] ++ fpl)
+                       Nothing Nothing Nothing Nothing Nothing 
                  ec <- waitForProcess ph
                  when (ec /= ExitSuccess)
-                      (fail $ "action_exec: command failed on " ++ fp ++ 
-                            ": " ++ show ec)
+                      (fail $ "action_exec: command failed on bin " ++ 
+                            formatBin ri bin ++ ": " ++ show ec)
                    
