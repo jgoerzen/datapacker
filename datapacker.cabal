@@ -9,7 +9,7 @@ license-file: COPYRIGHT
 extra-source-files: COPYING, datapacker.sgml, Makefile, INSTALL
 homepage: http://software.complete.org/datapacker
 Build-type: Simple
-Category: Network
+Category: System
 Synopsis: Tool to help pack files into the minimum number of CDs/DVDs/etc
 Description: datapacker is a tool to group files by size. It is
  designed to group files such that they fill fixed-size containers
