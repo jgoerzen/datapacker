@@ -1,12 +1,32 @@
 Source: datapacker
-Section: unknown
+Section: utils
 Priority: extra
 Maintainer: John Goerzen <jgoerzen@complete.org>
-Build-Depends: debhelper (>= 5)
-Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 5), groff, docbook-utils, man-db, gs, xpdf-utils,
+ gtk-doc-tools, sgml2x, jade,
+ ghc6 (>= 6.8), haskell-devscripts (>= 0.6.6), libghc6-missingh-dev (>= 1.0.1),
+ libghc6-unix-dev, libghc6-mtl-dev, libghc6-filepath-dev, libghc6-hslogger-dev
+Build-Conflicts: docbook-ebnf
+Standards-Version: 3.7.3
+Homepage: http://software.complete.org/datapacker
+Vcs-Browser: http://git.complete.org/datapacker
+Vcs-Git: git://git.complete.org/datapacker
 
 Package: datapacker
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${haskell:Depends}
+Description: Tool to pack files into minimum number of CDs/DVDs/etc
+ datapacker is a tool to group files by size. It is
+ designed to group files such that they fill fixed-size containers
+ (called "bins") using the minimum number of containers. This is
+ useful, for instance, if you want to archive a number of files to CD
+ or DVD, and want to organize them such that you use the minimum
+ possible number of CDs or DVDs.
+ .
+ In many cases, datapacker executes almost instantaneously. Of
+ particular note, the hardlink action can be used
+ to effectively copy data into bins without having to actually copy
+ the data at all.
+ .
+ datapacker is a tool in the traditional Unix style; it can be used in
+ pipes and call other tools.
