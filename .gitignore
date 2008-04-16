@@ -6,3 +6,7 @@ dist
 manpage.links
 manpage.refs
 setup
+*.html
+*.pdf
+*.ps
+
