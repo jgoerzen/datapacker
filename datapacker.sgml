@@ -372,6 +372,16 @@ datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
           read the list of files from standard input (stdin).
         </para>
         <para>
+          &datapacker; never recurses into subdirectories.  If you
+          want a recursive search -- finding all files in a given
+          directory and all its subdirectories -- see the second
+          example in the EXAMPLES section below.  &datapacker; is
+          designed to integrate with
+          <application>find</application>(1) in this situation to
+          let you take advantage of find's built-in powerful recursion
+          and filtering features.
+        </para>
+        <para>
           When reading files from standard input, it is assumed that
           the list contains one distinct filename per line.  Seasoned
           POSIX veterans will recognize the inherent limitations in
@@ -397,6 +407,19 @@ datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
           </para>
           <programlisting>
 datapacker -b ~/bins/%03d -s 600m -a hardlink ~/Pictures/*.jpg
+          </programlisting>
+        </listitem>
+
+        <listitem>
+          <para>
+            Put all files in <literal>~/Pictures</literal> or any
+            subdirectory thereof into 600MB bins under ~/bins, using
+            hardlinking.  This is a simple example to follow if you
+            simply want a recursive search of all files.
+          </para>
+          <programlisting>
+find ~/Pictures -type f -print0 | \
+  datapacker -0 -b ~/bins/%03d -s 600m -a hardlink -
           </programlisting>
         </listitem>
         <listitem>
@@ -437,6 +460,27 @@ find ~/Pictures -name "*.jpg" -print0 | \
             Note: the <literal>grep</literal> pattern in this example
             is simple, but will cause unexpected results if any
             matching file contains the word "total".
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            Find all JPEG images as above, and generate 600MB ISO
+            images of them in ~/bins.  This will generate the ISO
+            images directly without ever hardlinking files into
+            ~/bins.
+          </para>
+          <programlisting>
+find ~/Pictures -name "*.jpg" -print0 | \
+  datapacker -0 -b ~/bins/%03d.iso -s 4g \
+  '--action=exec:BIN="$1"; shift; mkisofs -r -J -o "$BIN" "$@"' \
+  -
+          </programlisting>
+          <para>
+            You could, if you so desired, pipe this result directly
+            into a DVD-burning application.  Or, you could use
+            <literal>growisofs</literal> to burn a DVD+R in a single
+            step.
           </para>
         </listitem>
       </itemizedlist>
