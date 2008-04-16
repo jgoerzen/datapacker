@@ -20,7 +20,7 @@ scan ri fplist =
     do sizes <- (liftM concat $ mapM getSize fplist)
        let func = if preserveOrder ri then packByOrder else packLargeFirst
        case func bins sizes of
-         Left x -> fail x
+         Left x -> fail (show x)
          Right x -> return x
     where getSize f = 
               do s <- getFileStatus f
