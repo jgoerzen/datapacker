@@ -1,0 +1,16 @@
+Sorry, I need to work on this some more...
+
+PREREQUISITES:
+
+ * GHC 6.8 or above             http://www.haskell.org/ghc
+
+Once you have that, you can just run "make".  It will tell you if you
+are missing any Haskell libraries.
+
+All remaining packages can be found from http://hackage.haskell.org as
+a central location.   Here are some of the packages and their
+homepages.  Again, you can use either their homepage or
+http://hackage.haskell.org to download them.
+
+ * MissingH 1.0.1 or above      http://software.complete.org/missingh
+ * hslogger                     http://software.complete.org/hslogger

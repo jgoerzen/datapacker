@@ -6,7 +6,7 @@ Author: John Goerzen
 Stability: Stable
 Copyright: Copyright (c) 2008 John Goerzen
 license-file: COPYRIGHT
-extra-source-files: COPYING, datapacker.sgml, Makefile
+extra-source-files: COPYING, datapacker.sgml, Makefile, INSTALL
 homepage: http://software.complete.org/datapacker
 Build-type: Simple
 Category: Network
