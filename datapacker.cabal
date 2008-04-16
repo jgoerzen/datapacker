@@ -6,30 +6,33 @@ Author: John Goerzen
 Stability: Stable
 Copyright: Copyright (c) 2008 John Goerzen
 license-file: COPYRIGHT
-extra-source-files: COPYING, INSTALL, doc/SConstruct,
-  doc/hpodder-manpage.sgml, doc/hpodder.sgml, doc/local.dsl,
-  doc/man.hpodder.sgml, doc/printlocal.dsl, doc/sgml-common/COPYING,
-  doc/sgml-common/COPYRIGHT, doc/sgml-common/ChangeLog,
-  doc/sgml-common/Makefile.common, doc/sgml-common/SConstruct,
-  doc/sgml-common/ps2epsi
+extra-source-files: COPYING, datapacker.sgml, Makefile
 homepage: http://software.complete.org/datapacker
 Build-type: Simple
 Category: Network
-Synopsis: Tools to help pack files into the minimum number of CDs/DVDs/etc
-Description: FIXME
- FIXME
+Synopsis: Tool to help pack files into the minimum number of CDs/DVDs/etc
+Description: datapacker is a tool to group files by size. It is
+ designed to group files such that they fill fixed-size containers
+ (called "bins") using the minimum number of containers. This is
+ useful, for instance, if you want to archive a number of files to CD
+ or DVD, and want to organize them such that you use the minimum
+ possible number of CDs or DVDs.
  .
- FIXME
-Build-Depends: unix, MissingH>=1.0.0, mtl, base, filepath, directory,
-               hslogger, process
+ In many cases, datapacker executes almost instantaneously. Of
+ particular note, the hardlink action can be used
+ to effectively copy data into bins without having to actually copy
+ the data at all.
+ .
+ datapacker is a tool in the traditional Unix style; it can be used in
+ pipes and call other tools.
 
+Build-Depends: unix, MissingH>=1.0.1, mtl, base, filepath, directory,
+               hslogger, process
 
 Executable: datapacker
 Main-Is: datapacker.hs
--- GHC-Options: -O2 -Werror -fwarn-incomplete-patterns
---              -fwarn-overlapping-patterns -fwarn-simple-patterns
    
-GHC-Options: -O2 -Werror -Wall
+GHC-Options: -O2 -Wall
      
 -- Extensions: ExistentialQuantification, OverlappingInstances,
 --    UndecidableInstances
