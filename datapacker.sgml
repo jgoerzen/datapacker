@@ -246,7 +246,7 @@ datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
             <para>
               Other useful variants could include
               <literal>destdir/%d</literal> to put the string
-              <literal>"destdir/</literal> in front of the bin number,
+              <literal>"destdir/"</literal> in front of the bin number,
               which is rendered without leading zeros.
             </para>
           </listitem>
@@ -433,6 +433,11 @@ find ~/Pictures -name "*.jpg" -print0 | \
 /home/jgoerzen/bins/003: 4.0G   total
 /home/jgoerzen/bins/004: 992M   total
           </programlisting>
+          <para>
+            Note: the <literal>grep</literal> pattern in this example
+            is simple, but will cause unexpected results if any
+            matching file contains the word "total".
+          </para>
         </listitem>
       </itemizedlist>
     </refsect1>
