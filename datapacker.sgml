@@ -411,6 +411,29 @@ find ~/Pictures -name "*.jpg" -print0 | \
   datapacker -0 -b ~/bins/%03d -s 600m -a hardlink -
           </programlisting>
         </listitem>
+
+        <listitem>
+          <para>
+            Find all JPEG images as above, put them in 4GB bins,
+            but instead of putting them
+            anywhere, calculate the size of each bin and display it.
+          </para>
+          <programlisting>
+find ~/Pictures -name "*.jpg" -print0 | \
+  datapacker -0 -b ~/bins/%03d -s 4g \
+  '--action=exec:echo -n "$1: "; shift; du -ch "$@" | grep total' \
+  -
+          </programlisting>
+          <para>
+            This will display output like so:
+          </para>
+          <programlisting>
+/home/jgoerzen/bins/001: 4.0G   total
+/home/jgoerzen/bins/002: 4.0G   total
+/home/jgoerzen/bins/003: 4.0G   total
+/home/jgoerzen/bins/004: 992M   total
+          </programlisting>
+        </listitem>
       </itemizedlist>
     </refsect1>
       
