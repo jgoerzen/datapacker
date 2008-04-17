@@ -1,5 +1,5 @@
 Name: datapacker
-Version: 1.0.0
+Version: 1.0.0.1
 License: GPL
 Maintainer: John Goerzen <jgoerzen@complete.org>
 Author: John Goerzen
@@ -31,6 +31,7 @@ Build-Depends: unix, MissingH>=1.0.1, mtl, base, filepath, directory,
 
 Executable: datapacker
 Main-Is: datapacker.hs
+Other-Modules: Actions, Scan, Types
    
 GHC-Options: -O2 -Wall
      
