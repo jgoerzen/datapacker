@@ -269,6 +269,22 @@ datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
         </varlistentry>
 
         <varlistentry>
+          <term>-D</term>
+          <term>--deep-links</term>
+          <listitem>
+            <para>
+              When used with the symlink or hardlink action, instead
+              of making all links in a single flat directory under the
+              bin, mimic the source directory structure under the
+              bin.  Makes most sense when used with
+              <option>-p</option>, but could also be useful without it
+              if there are files with the same name in different
+              source directories.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
           <term>--help</term>
           <listitem>
             <para>
