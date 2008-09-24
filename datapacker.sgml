@@ -206,6 +206,9 @@ datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
                     with the same filename in different paths.
                     &datapacker; will exit on either of these situations.
                   </para>
+                  <para>
+                    See also <option>--deep-links</option>.
+                  </para>
                 </listitem>
               </varlistentry>
 
@@ -220,6 +223,8 @@ datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
                   single filename occur in multiple input directories
                   with this option.
                   </para>
+                  <para>
+                    See also <option>--deep-links</option>.
                 </listitem>
               </varlistentry>
             </variablelist>
@@ -361,6 +366,20 @@ datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
             </para>
           </listitem>
         </varlistentry>
+
+        <varlistentry>
+          <term>--sort</term>
+          <listitem>
+            <para>
+              Sorts the list of files to process before acting upon
+              them.  When combined with <option>-p</option>, causes
+              the output to be sorted.  This option has no effect save
+              increasing CPU usage when not combined with
+              <option>-p</option>.
+            </para>
+          </listitem>
+        </varlistentry>
+
       </variablelist>
       <refsect2>
         <title>File Specification</title>
