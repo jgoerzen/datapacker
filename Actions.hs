@@ -30,7 +30,8 @@ runAction ri resultlist =
       Exec x -> action_exec x ri resultlist
 
 formatBin :: RunInfo -> Integer -> String
-formatBin ri bin = printf (binFmt ri) bin
+formatBin ri bin = 
+   printf (binFmt ri) bin
 
 action_print :: RunInfo -> [(Integer, [FilePath])] -> IO ()
 action_print ri =
@@ -63,8 +64,12 @@ action_link func ri =
     where makeLink (bin, fpl) = 
               mapM_ (makeLink' (formatBin ri bin)) fpl
           makeLink' bin fp =
-              do createDirectoryIfMissing False bin
-                 func fp (bin ++ "/" ++ takeFileName fp)
+              if deepLinks ri
+                 then do let dirname = bin ++ "/" ++ takeDirectory fp
+                         createDirectoryIfMissing True dirname
+                         func fp (dirname ++ "/" ++ takeFileName fp)
+                 else do createDirectoryIfMissing False bin
+                         func fp (bin ++ "/" ++ takeFileName fp)
 
 action_exec :: String -> RunInfo -> [(Integer, [FilePath])] -> IO ()
 action_exec cmd ri inp =

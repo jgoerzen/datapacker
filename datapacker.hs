@@ -62,12 +62,14 @@ options = [
                   \Tip: this can include a directory.\n\
                   \default: %03d",
            Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
+           Option "D" ["deep-links"] (NoArg ("D", "")) "Enable deep bin directories",
            Option "p" ["preserve-order"] (NoArg ("p", ""))
                   "Don't reorder files for maximum packing",
            Option "s" ["size"] (ReqArg (stdRequired "s") "SIZE")
                   "Size of each output bin",
            Option "S" ["size-first"] (ReqArg (stdRequired "S") "SIZE")
                   "Override size of first output bin",
+           Option "" ["sort"] (NoArg ("sort", "")) "Sort input; useless without -p",
            Option "" ["help"] (NoArg ("help", "")) "Display this help"]
 
 worker :: [(String, String)] -> [FilePath] -> IO ()
@@ -89,7 +91,9 @@ worker args files =
                         then readFileList (readNull runinfo)
                         else return files
 
-       results <- scan runinfo files_scan
+       let listToProc = if sortFiles runinfo then sort files_scan else files_scan
+
+       results <- scan runinfo listToProc
        let numberedResults = zip [1..] (map (map snd) results)
        runAction runinfo numberedResults
 
@@ -118,6 +122,12 @@ parseArgs args =
        let b = case lookup "b" args of
                  Nothing -> "%03d"
                  Just x -> x
+       let deeplinks = case lookup "D" args of
+                        Nothing -> False
+                        Just _ -> True
+       let dosort = case lookup "sort" args of
+                      Nothing -> False
+                      Just _ -> True
        a <- case lookup "a" args of
               Nothing -> return Print
               Just "print" -> return Print
@@ -131,7 +141,7 @@ parseArgs args =
                      else fail $ "Unknown action: " ++ show x
        return $ RunInfo {binSize = size, firstBinSize = first,
                          preserveOrder = po, readNull = n, binFmt = b,
-                         action = a}
+                         action = a, deepLinks = deeplinks, sortFiles = dosort}
 
 usageerror :: String -> IO t
 usageerror errormsg =
