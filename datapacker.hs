@@ -62,7 +62,7 @@ options = [
                   \Tip: this can include a directory.\n\
                   \default: %03d",
            Option "d" ["debug"] (NoArg ("d", "")) "Enable debugging",
-           Option "D" ["deep-bins"] (NoArg ("D", "")) "Enable deep bin directories",
+           Option "D" ["deep-links"] (NoArg ("D", "")) "Enable deep bin directories",
            Option "p" ["preserve-order"] (NoArg ("p", ""))
                   "Don't reorder files for maximum packing",
            Option "s" ["size"] (ReqArg (stdRequired "s") "SIZE")
@@ -122,7 +122,7 @@ parseArgs args =
        let b = case lookup "b" args of
                  Nothing -> "%03d"
                  Just x -> x
-       let deepbins = case lookup "D" args of
+       let deeplinks = case lookup "D" args of
                         Nothing -> False
                         Just _ -> True
        let dosort = case lookup "sort" args of
@@ -141,7 +141,7 @@ parseArgs args =
                      else fail $ "Unknown action: " ++ show x
        return $ RunInfo {binSize = size, firstBinSize = first,
                          preserveOrder = po, readNull = n, binFmt = b,
-                         action = a, deepBins = deepbins, sortFiles = dosort}
+                         action = a, deepLinks = deeplinks, sortFiles = dosort}
 
 usageerror :: String -> IO t
 usageerror errormsg =

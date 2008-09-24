@@ -17,7 +17,7 @@ data RunInfo =
              firstBinSize :: Integer,
              preserveOrder :: Bool,
              sortFiles :: Bool,
-             deepBins :: Bool,
+             deepLinks :: Bool,
              readNull :: Bool,
              binFmt :: String,
              action :: Action}
