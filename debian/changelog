@@ -1,3 +1,9 @@
+datapacker (1.0.1) unstable; urgency=low
+
+  * Added new --sort and -D options.
+
+ -- John Goerzen <jgoerzen@complete.org>  Thu, 25 Sep 2008 01:40:54 -0500
+
 datapacker (1.0.0) unstable; urgency=low
 
   * Initial Release.  Closes: #476340.
