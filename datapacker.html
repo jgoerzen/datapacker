@@ -1,0 +1,978 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>datapacker Manual</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"></HEAD
+><BODY
+CLASS="REFERENCE"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="REFERENCE"
+><A
+NAME="AEN1"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>I. datapacker Manual</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="#AEN3"
+>datapacker</A
+>&nbsp;--&nbsp;Tool to pack files into the minimum number
+        of bins</DT
+></DL
+></DIV
+></DIV
+><H1
+><A
+NAME="AEN3"
+></A
+>datapacker</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN14"
+></A
+><H2
+>Name</H2
+>datapacker&nbsp;--&nbsp;Tool to pack files into the minimum number
+        of bins</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN17"
+></A
+><H2
+>Synopsis</H2
+><P
+><B
+CLASS="COMMAND"
+>datapacker</B
+>  [-0] [-a <TT
+CLASS="REPLACEABLE"
+><I
+>ACTION</I
+></TT
+>] [-b <TT
+CLASS="REPLACEABLE"
+><I
+>FORMAT</I
+></TT
+>] [-d] [-p] [-S <TT
+CLASS="REPLACEABLE"
+><I
+>SIZE</I
+></TT
+>]  -s <TT
+CLASS="REPLACEABLE"
+><I
+>SIZE</I
+></TT
+>   <TT
+CLASS="REPLACEABLE"
+><I
+>FILE</I
+></TT
+>... </P
+><P
+><B
+CLASS="COMMAND"
+>datapacker</B
+>   -h | --help </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38"
+></A
+><H2
+>Description</H2
+><P
+><SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> is a tool to group files by size.  It is
+        designed to group files such that they fill fixed-size
+        containers (called "bins") using the minimum number of
+        containers.  This is useful, for instance, if you want to
+        archive a number of files to CD or DVD, and want to organize
+        them such that you use the minimum possible number of CDs or
+        DVDs.
+      </P
+><P
+>        In many cases, <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> executes almost instantaneously.
+        Of particular note, the <TT
+CLASS="LITERAL"
+>hardlink</TT
+> action
+        (see OPTIONS below) can be used to effectively copy data into
+        bins without having to actually copy the data at all.
+      </P
+><P
+>        <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> is a tool in the traditional Unix style; it can
+        be used in pipes and call other tools.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47"
+></A
+><H2
+>Options</H2
+><P
+>        Here are the command-line options you may set for
+        <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+>.  Please note that <CODE
+CLASS="OPTION"
+>-s</CODE
+> and at
+        least one file (see FILE SPECIFICATION below) is mandatory.
+      </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>-0, --null</DT
+><DD
+><P
+>              When reading a list of files from standard input (see
+              FILE SPECIFICATION below), expect the input to be
+              separated by NULL (ASCII 0) characters instead of one
+              per line.  Especially useful with <B
+CLASS="COMMAND"
+>find
+                -print0</B
+>.
+            </P
+></DD
+><DT
+>-a <TT
+CLASS="REPLACEABLE"
+><I
+>ACTION</I
+></TT
+>, --action=<TT
+CLASS="REPLACEABLE"
+><I
+>ACTION</I
+></TT
+></DT
+><DD
+><P
+>              Defines what action to take with the matches.  Please
+              note that, with any action, the output will be sorted by
+              bin, with bin 1 first.  Possible
+              actions include:
+            </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>print</DT
+><DD
+><P
+>Print one human-readable line per
+                    file.  Each line contains the bin number (in the
+                    format given by <CODE
+CLASS="OPTION"
+>-b</CODE
+>), an ASCII tab
+                    character, then the filename.
+                  </P
+></DD
+><DT
+>printfull</DT
+><DD
+><P
+>Print one semi-human-readable line per
+                    bin.  Each line contains the bin number, then a list
+                    of filenames to place in that bin,
+                    with an ASCII tab character after the
+                    bin number and between each filename.
+                  </P
+></DD
+><DT
+>print0</DT
+><DD
+><P
+>                    For each file, output the bin number (according to the
+                    format given by <CODE
+CLASS="OPTION"
+>-b</CODE
+>), an ASCII
+                    NULL character, the filename, and another ASCII
+                    NULL character.  Ideal for use with <TT
+CLASS="LITERAL"
+>xargs
+                      -0 -L 2</TT
+>.
+                  </P
+></DD
+><DT
+>exec:<TT
+CLASS="REPLACEABLE"
+><I
+>COMMAND</I
+></TT
+></DT
+><DD
+><P
+>                    For each file, execute the specified COMMAND via
+                    the shell.  The program COMMAND will be passed
+                    information on its command line as indicated below.
+                  </P
+><P
+>                    It is an error if the generated command line for a
+                    given bin is too large for the system.
+                  </P
+><P
+>                    A nonzero exit code from any COMMAND will cause
+                    <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> to terminate.  If COMMAND contains
+                    quotes, don't forget to quote the entire command,
+                    as in:
+                  </P
+><PRE
+CLASS="PROGRAMLISTING"
+>datapacker '--action=exec:echo "Bin: $1"; shift; ls "$@"'
+                  </PRE
+><P
+>                    The arguments to the given command will be:
+                  </P
+><P
+></P
+><UL
+><LI
+><P
+>                        <TT
+CLASS="LITERAL"
+>argv[0]</TT
+> ($0 in shell) will
+                        be the name of the shell used to invoke the
+                        command -- <TT
+CLASS="LITERAL"
+>$SHELL</TT
+> or
+                        <TT
+CLASS="LITERAL"
+>/bin/sh</TT
+>.
+                      </P
+></LI
+><LI
+><P
+>                        <TT
+CLASS="LITERAL"
+>argv[1]</TT
+> ($1 in shell) will
+                        be the bin number, formatted according to
+                        <CODE
+CLASS="OPTION"
+>-b</CODE
+>.</P
+></LI
+><LI
+><P
+>                        <TT
+CLASS="LITERAL"
+>argv[2]</TT
+> and on ($2 and on
+                        in shell) will be the files to place in that
+                        bin
+                      </P
+></LI
+></UL
+></DD
+><DT
+>hardlink</DT
+><DD
+><P
+>                    For each file, create a hardlink at
+                    <TT
+CLASS="REPLACEABLE"
+><I
+>bin</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>
+                    pointing to the original input filename.  Creates
+                    the directory <TT
+CLASS="REPLACEABLE"
+><I
+>bin</I
+></TT
+> as
+                    necessary.  Alternative locations and formats for
+                    <TT
+CLASS="REPLACEABLE"
+><I
+>bin</I
+></TT
+> can be specified
+                    with <CODE
+CLASS="OPTION"
+>-b</CODE
+>.  All bin directories and
+                    all input must reside on the same filesystem.
+                  </P
+><P
+>                    After you are done processing the results of the
+                    bin, you may safely delete the bins without
+                    deleting original data.  Alternatively, you could
+                    leave the bins and delete the original data.
+                    Either approach will be workable.
+                  </P
+><P
+>                    It is an error to attempt to make a hard link
+                    across filesystems, or to have two input files
+                    with the same filename in different paths.
+                    <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> will exit on either of these situations.
+                  </P
+><P
+>                    See also <CODE
+CLASS="OPTION"
+>--deep-links</CODE
+>.
+                  </P
+></DD
+><DT
+>symlink</DT
+><DD
+><P
+>Like <CODE
+CLASS="OPTION"
+>hardlink</CODE
+>, but create
+                  symlinks instead.  Symlinks can span filesystems,
+                  but you will lose information if you remove the
+                  original (pre-bin) data.  Like
+                  <CODE
+CLASS="OPTION"
+>hardlink</CODE
+>, it is an error to have a
+                  single filename occur in multiple input directories
+                  with this option.
+                  </P
+><P
+>                    See also <CODE
+CLASS="OPTION"
+>--deep-links</CODE
+>.
+                </P
+></DD
+></DL
+></DIV
+></DD
+><DT
+>-b <TT
+CLASS="REPLACEABLE"
+><I
+>FORMAT</I
+></TT
+>, --binfmt=<TT
+CLASS="REPLACEABLE"
+><I
+>FORMAT</I
+></TT
+></DT
+><DD
+><P
+>              Defines the output format for the bin name.  This format
+              is given as a <TT
+CLASS="LITERAL"
+>%d</TT
+> input to a function
+              that interprets it as
+              <SPAN
+CLASS="APPLICATION"
+>printf</SPAN
+>(3) would.
+              This can be useful both to define the name and the
+              location of your bins.  When running <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> with
+              certain arguments, the bin format can be taken to be a
+              directory in which files in that bin are linked.  The
+              default is <TT
+CLASS="LITERAL"
+>%03d</TT
+>, which outputs
+              integers with leading zeros to make all bin names at
+              least three characters wide.
+            </P
+><P
+>              Other useful variants could include
+              <TT
+CLASS="LITERAL"
+>destdir/%d</TT
+> to put the string
+              <TT
+CLASS="LITERAL"
+>"destdir/"</TT
+> in front of the bin number,
+              which is rendered without leading zeros.
+            </P
+></DD
+><DT
+>-d, --debug</DT
+><DD
+><P
+>              Enable debug mode.  This is here for future expansion
+              and does not currently have any effect.
+            </P
+></DD
+><DT
+>-D, --deep-links</DT
+><DD
+><P
+>              When used with the symlink or hardlink action, instead
+              of making all links in a single flat directory under the
+              bin, mimic the source directory structure under the
+              bin.  Makes most sense when used with
+              <CODE
+CLASS="OPTION"
+>-p</CODE
+>, but could also be useful without it
+              if there are files with the same name in different
+              source directories.
+            </P
+></DD
+><DT
+>--help</DT
+><DD
+><P
+>              Display brief usage information and exit.
+            </P
+></DD
+><DT
+>-p, --preserve-order</DT
+><DD
+><P
+>              Normally, <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> uses an efficient algorithm that
+              tries to rearrange files such that the number of bins
+              required is minimized.  Sometimes you may instead wish
+              to preserve the ordering of files at the expense of
+              potentially using more bins.  In these cases, you would
+              want to use this option.
+            </P
+><P
+>              As an example of such a situation: perhaps you have
+              taken one photo a day for several years.  You would like
+              to archive these photos to CD, but you want them to be
+              stored in chronological order.  You have named the files
+              such that the names indicate order, so you can pass the
+              file list to <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> using <CODE
+CLASS="OPTION"
+>-p</CODE
+> to
+              preserve the ordering in your bins.  Thus, bin 1 will
+              contain the oldest files, bin 2 the second-oldest, and
+              so on.  If <CODE
+CLASS="OPTION"
+>-p</CODE
+> wasn't used, you might
+              use fewer CDs, but the photos would be spread out across
+              all CDs without preserving your chronological order.
+            </P
+></DD
+><DT
+>-s <TT
+CLASS="REPLACEABLE"
+><I
+>SIZE</I
+></TT
+>, --size=<TT
+CLASS="REPLACEABLE"
+><I
+>SIZE</I
+></TT
+></DT
+><DD
+><P
+>              Gives the size of each bin in bytes.  Suffixes such as
+              "k", "m", "g", etc. may be used to indicate kilobytes,
+              megabytes, gigabytes, and so forth.  Numbers such as
+              <TT
+CLASS="LITERAL"
+>1.5g</TT
+> are valid, and if needed, will
+              be rounded to the nearest possible integer value.
+            </P
+><P
+>              The size of the first bin may be overridden with
+              <CODE
+CLASS="OPTION"
+>-S</CODE
+>.
+            </P
+><P
+>              Here are the sizes of some commonly-used bins.  For each
+              item, I have provided you with both the underlying
+              recording capacity of the disc and a suggested value for
+              <CODE
+CLASS="OPTION"
+>-s</CODE
+>.  The suggested value for
+              <CODE
+CLASS="OPTION"
+>-s</CODE
+> is lower than the underlying
+              capacity because there is overhead imposed by the
+              filesystem stored on the disc.  You will perhaps find
+              that the suggested value for <CODE
+CLASS="OPTION"
+>-s</CODE
+> is
+              lower than optimal for discs that contain few large
+              files, and higher than desired for discs that contain
+              vast amounts of small files.
+            </P
+><P
+></P
+><UL
+><LI
+><P
+>CD-ROM, 74-minute (standard): 650m / 600m</P
+></LI
+><LI
+><P
+>CD-ROM, 80-minute: 703m / 650m</P
+></LI
+><LI
+><P
+>CD-ROM, 90-minute: 790m / 740m</P
+></LI
+><LI
+><P
+>CD-ROM, 99-minute: 870m / 820m</P
+></LI
+><LI
+><P
+>DVD+-R: 4.377g / 4g</P
+></LI
+><LI
+><P
+>DVD+R, dual layer: 8.5g / 8g</P
+></LI
+></UL
+></DD
+><DT
+>-S, --size-first</DT
+><DD
+><P
+>              The size of the first bin.  If not given, defaults to
+              the value given with <CODE
+CLASS="OPTION"
+>-s</CODE
+>.  This may be
+              useful if you will be using a mechanism outside
+              <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> to add additional information to the first
+              bin: perhaps an index of which bin has which file, the
+              information necessary to make a CD bootable, etc.  You
+              may use the same suffixes as with <CODE
+CLASS="OPTION"
+>-s</CODE
+>
+              with this option.
+            </P
+></DD
+><DT
+>--sort</DT
+><DD
+><P
+>              Sorts the list of files to process before acting upon
+              them.  When combined with <CODE
+CLASS="OPTION"
+>-p</CODE
+>, causes
+              the output to be sorted.  This option has no effect save
+              increasing CPU usage when not combined with
+              <CODE
+CLASS="OPTION"
+>-p</CODE
+>.
+            </P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN207"
+></A
+><H3
+>File Specification</H3
+><P
+>          After the options, you must supply one or more files to
+          consider for packing into bins.  Alternatively, instead of
+          listing files on the command line, you may list a single
+          hyphen (<TT
+CLASS="LITERAL"
+>-</TT
+>), which tells <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> to
+          read the list of files from standard input (stdin).
+        </P
+><P
+>          <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> never recurses into subdirectories.  If you
+          want a recursive search -- finding all files in a given
+          directory and all its subdirectories -- see the second
+          example in the EXAMPLES section below.  <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> is
+          designed to integrate with
+          <SPAN
+CLASS="APPLICATION"
+>find</SPAN
+>(1) in this situation to
+          let you take advantage of find's built-in powerful recursion
+          and filtering features.
+        </P
+><P
+>          When reading files from standard input, it is assumed that
+          the list contains one distinct filename per line.  Seasoned
+          POSIX veterans will recognize the inherent limitations in
+          this format.  For that reason, when given
+          <CODE
+CLASS="OPTION"
+>-0</CODE
+> in conjunction with the single file
+          <TT
+CLASS="LITERAL"
+>-</TT
+>, <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> will instead expect, on
+          standard input, a list of files, each one terminated by an
+          ASCII NULL character.  Such a list can be easily generated
+          with <SPAN
+CLASS="APPLICATION"
+>find</SPAN
+>(1) using its
+          <CODE
+CLASS="OPTION"
+>-print0</CODE
+> option.
+        </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN222"
+></A
+><H2
+>Examples</H2
+><P
+></P
+><UL
+><LI
+><P
+>            Put all JPEG images in <TT
+CLASS="LITERAL"
+>~/Pictures</TT
+>
+            into bins (using hardlinks) under the pre-existing directory
+            <TT
+CLASS="LITERAL"
+>~/bins</TT
+>, no more than 600MB per bin:
+          </P
+><PRE
+CLASS="PROGRAMLISTING"
+>datapacker -b ~/bins/%03d -s 600m -a hardlink ~/Pictures/*.jpg
+          </PRE
+></LI
+><LI
+><P
+>            Put all files in <TT
+CLASS="LITERAL"
+>~/Pictures</TT
+> or any
+            subdirectory thereof into 600MB bins under ~/bins, using
+            hardlinking.  This is a simple example to follow if you
+            simply want a recursive search of all files.
+          </P
+><PRE
+CLASS="PROGRAMLISTING"
+>find ~/Pictures -type f -print0 | \
+  datapacker -0 -b ~/bins/%03d -s 600m -a hardlink -
+          </PRE
+></LI
+><LI
+><P
+>            Find all JPEG images in <TT
+CLASS="LITERAL"
+>~/Pictures</TT
+> or
+            any subdirectory thereof, put them into bins (using
+            hardlinks) under the pre-existing directory
+            <TT
+CLASS="LITERAL"
+>~/bins</TT
+>, no more than 600MB per bin:
+          </P
+><PRE
+CLASS="PROGRAMLISTING"
+>find ~/Pictures -name "*.jpg" -print0 | \
+  datapacker -0 -b ~/bins/%03d -s 600m -a hardlink -
+          </PRE
+></LI
+><LI
+><P
+>            Find all JPEG images as above, put them in 4GB bins,
+            but instead of putting them
+            anywhere, calculate the size of each bin and display it.
+          </P
+><PRE
+CLASS="PROGRAMLISTING"
+>find ~/Pictures -name "*.jpg" -print0 | \
+  datapacker -0 -b ~/bins/%03d -s 4g \
+  '--action=exec:echo -n "$1: "; shift; du -ch "$@" | grep total' \
+  -
+          </PRE
+><P
+>            This will display output like so:
+          </P
+><PRE
+CLASS="PROGRAMLISTING"
+>/home/jgoerzen/bins/001: 4.0G   total
+/home/jgoerzen/bins/002: 4.0G   total
+/home/jgoerzen/bins/003: 4.0G   total
+/home/jgoerzen/bins/004: 992M   total
+          </PRE
+><P
+>            Note: the <TT
+CLASS="LITERAL"
+>grep</TT
+> pattern in this example
+            is simple, but will cause unexpected results if any
+            matching file contains the word "total".
+          </P
+></LI
+><LI
+><P
+>            Find all JPEG images as above, and generate 600MB ISO
+            images of them in ~/bins.  This will generate the ISO
+            images directly without ever hardlinking files into
+            ~/bins.
+          </P
+><PRE
+CLASS="PROGRAMLISTING"
+>find ~/Pictures -name "*.jpg" -print0 | \
+  datapacker -0 -b ~/bins/%03d.iso -s 4g \
+  '--action=exec:BIN="$1"; shift; mkisofs -r -J -o "$BIN" "$@"' \
+  -
+          </PRE
+><P
+>            You could, if you so desired, pipe this result directly
+            into a DVD-burning application.  Or, you could use
+            <TT
+CLASS="LITERAL"
+>growisofs</TT
+> to burn a DVD+R in a single
+            step.
+          </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN251"
+></A
+><H2
+>Errors</H2
+><P
+>        It is an error if any specified file exceeds the value given
+        with <TT
+CLASS="LITERAL"
+>-s</TT
+> or <TT
+CLASS="LITERAL"
+>-S</TT
+>.
+      </P
+><P
+>        It is also an error if any specified files disappear while
+        <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> is running.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN258"
+></A
+><H2
+>Bugs</H2
+><P
+>          Reports of bugs should be reported online at the
+          <SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> homepage.
+          Debian users are encouraged to instead use the
+	Debian
+          bug-tracking system.
+	</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN262"
+></A
+><H2
+>Copyright</H2
+><P
+><SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+>, and this manual, are Copyright &copy; 2008 John Goerzen.</P
+><P
+>        All code, documentation, and build scripts are under the following
+        license unless otherwise noted:
+      </P
+><P
+>    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+      </P
+><P
+>    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+      </P
+><P
+>    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see
+    <A
+HREF="http://www.gnu.org/licenses/"
+TARGET="_top"
+>http://www.gnu.org/licenses/</A
+>.
+      </P
+><P
+>The GNU General Public License is available in the file COPYING in the source
+distribution.  Debian GNU/Linux users may find this in
+/usr/share/common-licenses/GPL-3.
+      </P
+><P
+>If the GPL is unacceptable for your uses, please e-mail me; alternative
+terms can be negotiated for your project.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN273"
+></A
+><H2
+>Author</H2
+><P
+><SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+>, its libraries, documentation, and all included files, except where
+	noted, was written by John Goerzen <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:jgoerzen@complete.org"
+>jgoerzen@complete.org</A
+>&#62;</CODE
+> and
+	copyright is held as stated in the COPYRIGHT section.
+      </P
+><P
+>	<SPAN
+CLASS="APPLICATION"
+>datapacker</SPAN
+> may be downloaded, and information found, from its
+	<A
+HREF="http://software.complete.org/datapacker"
+TARGET="_top"
+>homepage</A
+>.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN281"
+></A
+><H2
+>See Also</H2
+><P
+><SPAN
+CLASS="APPLICATION"
+>mkisofs</SPAN
+>(1),
+	<SPAN
+CLASS="APPLICATION"
+>genisoimage</SPAN
+>(1)
+      </P
+></DIV
+></DIV
+></BODY
+></HTML
+>
