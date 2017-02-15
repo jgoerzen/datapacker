@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 5), groff, docbook-utils, man-db, ghostscript,
  ghc (>= 6.8), haskell-devscripts (>= 0.6.6), libghc-missingh-dev (>= 1.0.1),
  libghc-unix-dev, libghc-mtl-dev, libghc-filepath-dev, libghc-hslogger-dev
 Build-Conflicts: docbook-ebnf
-Standards-Version: 3.7.3
+Standards-Version: 3.9.8
 Homepage: https://github.com/jgoerzen/datapacker/wiki
 Vcs-Browser: https://github.com/jgoerzen/datapacker
 Vcs-Git: https://github.com/jgoerzen/datapacker.git

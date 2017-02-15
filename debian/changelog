@@ -1,6 +1,7 @@
 datapacker (1.0.2) unstable; urgency=medium
 
   * Ack NMUs.  Closes: #840517, #843420, #629774, #549388.
+  * Bump standards-version.
 
  -- John Goerzen <jgoerzen@complete.org>  Tue, 14 Feb 2017 19:24:16 -0600
 
