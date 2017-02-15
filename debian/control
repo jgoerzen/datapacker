@@ -2,15 +2,15 @@ Source: datapacker
 Section: utils
 Priority: extra
 Maintainer: John Goerzen <jgoerzen@complete.org>
-Build-Depends: debhelper (>= 5), groff, docbook-utils, man-db, gs, xpdf-utils,
- gtk-doc-tools, sgml2x, jade,
- ghc6 (>= 6.8), haskell-devscripts (>= 0.6.6), libghc6-missingh-dev (>= 1.0.1),
- libghc6-unix-dev, libghc6-mtl-dev, libghc6-filepath-dev, libghc6-hslogger-dev
+Build-Depends: debhelper (>= 5), groff, docbook-utils, man-db, ghostscript,
+ gtk-doc-tools, sgml2x,
+ ghc (>= 6.8), haskell-devscripts (>= 0.6.6), libghc-missingh-dev (>= 1.0.1),
+ libghc-unix-dev, libghc-mtl-dev, libghc-filepath-dev, libghc-hslogger-dev
 Build-Conflicts: docbook-ebnf
 Standards-Version: 3.7.3
-Homepage: http://software.complete.org/datapacker
-Vcs-Browser: http://git.complete.org/datapacker
-Vcs-Git: git://git.complete.org/datapacker
+Homepage: https://github.com/jgoerzen/datapacker/wiki
+Vcs-Browser: https://github.com/jgoerzen/datapacker
+Vcs-Git: https://github.com/jgoerzen/datapacker.git
 
 Package: datapacker
 Architecture: any

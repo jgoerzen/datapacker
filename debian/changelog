@@ -1,3 +1,37 @@
+datapacker (1.0.1+nmu4) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Remove Build-Depends on jade. (Closes: #840517)
+  * Update Homepage and Vcs-* fields in d/control
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Wed, 23 Nov 2016 16:15:14 +0100
+
+datapacker (1.0.1+nmu3) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * No-change rebuild to make armel build again
+    (binNMU can't work because of #843420).
+    Closes: #843420
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Sun, 06 Nov 2016 23:42:39 +0100
+
+datapacker (1.0.1+nmu2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Update build-dependencies for GHC 7 (LP: #826233), (Closes: #629774),
+    thanks cjwatson for the fix.
+
+ -- Paul Tagliamonte <paultag@debian.org>  Sun, 29 Jul 2012 15:33:07 -0400
+
+datapacker (1.0.1+nmu1) unstable; urgency=low
+
+  * Non-maintainer uploaded needed to address xpdf's RC bugs:
+  * Remove spurious build-dependency on xpdf-utils, the PDF conversion
+    is actually performed by ps2pdf from Ghostscript (Closes: #549388)
+  * Also migrate from the transitional gs package to ghostscript	
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Mon, 02 Nov 2009 22:14:37 +0100
+
 datapacker (1.0.1) unstable; urgency=low
 
   * Added new --sort and -D options.
