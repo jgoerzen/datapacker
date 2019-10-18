@@ -1,6 +1,6 @@
 Source: datapacker
 Section: utils
-Priority: extra
+Priority: optional
 Maintainer: John Goerzen <jgoerzen@complete.org>
 Build-Depends: debhelper-compat (= 12), groff, docbook-utils, man-db, ghostscript,
  gtk-doc-tools, sgml2x,
