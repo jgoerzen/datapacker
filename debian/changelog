@@ -2,6 +2,7 @@ datapacker (1.0.3) UNRELEASED; urgency=medium
 
   * Trim trailing whitespace.
   * debian/rules: Use dh_prep rather than "dh_clean -k".
+  * Explicitly specify source format.
 
  -- Debian Janitor <janitor@jelmer.uk>  Fri, 18 Oct 2019 04:11:19 +0000
 
