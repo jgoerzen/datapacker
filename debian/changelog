@@ -1,3 +1,9 @@
+datapacker (1.0.3) UNRELEASED; urgency=medium
+
+  * Trim trailing whitespace.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Fri, 18 Oct 2019 04:11:19 +0000
+
 datapacker (1.0.2) unstable; urgency=medium
 
   * Ack NMUs.  Closes: #840517, #843420, #629774, #549388.
@@ -35,7 +41,7 @@ datapacker (1.0.1+nmu1) unstable; urgency=low
   * Non-maintainer uploaded needed to address xpdf's RC bugs:
   * Remove spurious build-dependency on xpdf-utils, the PDF conversion
     is actually performed by ps2pdf from Ghostscript (Closes: #549388)
-  * Also migrate from the transitional gs package to ghostscript	
+  * Also migrate from the transitional gs package to ghostscript
 
  -- Moritz Muehlenhoff <jmm@debian.org>  Mon, 02 Nov 2009 22:14:37 +0100
 
