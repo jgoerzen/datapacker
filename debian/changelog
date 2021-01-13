@@ -1,12 +1,18 @@
-datapacker (1.0.3) UNRELEASED; urgency=medium
+datapacker (1.0.3) unstable; urgency=medium
 
+  [ Debian Janitor ]
   * Trim trailing whitespace.
   * debian/rules: Use dh_prep rather than "dh_clean -k".
   * Explicitly specify source format.
   * Bump debhelper from deprecated 5 to 12.
   * Change priority extra to priority optional.
 
- -- Debian Janitor <janitor@jelmer.uk>  Fri, 18 Oct 2019 04:11:19 +0000
+  [ John Goerzen ]
+  * Update version info
+  * Update for new MonadFail.  Closes: #963838
+  * Fix warnings
+
+ -- John Goerzen <jgoerzen@complete.org>  Wed, 13 Jan 2021 00:08:09 -0600
 
 datapacker (1.0.2) unstable; urgency=medium
 
