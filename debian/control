@@ -1,8 +1,8 @@
 Source: datapacker
 Section: utils
-Priority: extra
+Priority: optional
 Maintainer: John Goerzen <jgoerzen@complete.org>
-Build-Depends: debhelper (>= 5), groff, docbook-utils, man-db, ghostscript,
+Build-Depends: debhelper-compat (= 12), groff, docbook-utils, man-db, ghostscript,
  gtk-doc-tools, sgml2x,
  ghc (>= 6.8), haskell-devscripts (>= 0.6.6), libghc-missingh-dev (>= 1.0.1),
  libghc-unix-dev, libghc-mtl-dev, libghc-filepath-dev, libghc-hslogger-dev
