@@ -1,13 +1,13 @@
 Name: datapacker
-Version: 1.0.1
+Version: 1.0.3
 License: GPL
 Maintainer: John Goerzen <jgoerzen@complete.org>
 Author: John Goerzen
 Stability: Stable
-Copyright: Copyright (c) 2008 John Goerzen
+Copyright: Copyright (c) 2008-2021 John Goerzen
 license-file: COPYRIGHT
 extra-source-files: COPYING, datapacker.sgml, Makefile, INSTALL
-homepage: http://software.complete.org/datapacker
+homepage: https://github.com/jgoerzen/datapacker
 Build-type: Simple
 Category: System
 Synopsis: Tool to help pack files into the minimum number of CDs/DVDs/etc
