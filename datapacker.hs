@@ -108,7 +108,7 @@ readFileList nullsep =
 parseArgs :: [(String, String)] -> Either String RunInfo
 parseArgs args =
     do size <- case lookup "s" args of
-                 Nothing -> fail "Missing required argument --size"
+                 Nothing -> error "Missing required argument --size"
                  Just x -> parseNumInt binaryOpts True x
        first <- case lookup "S" args of
                   Nothing -> return size
@@ -138,7 +138,7 @@ parseArgs args =
               Just x -> 
                   if "exec:" `isPrefixOf` x
                      then return (Exec (drop 5 x))
-                     else fail $ "Unknown action: " ++ show x
+                     else error $ "Unknown action: " ++ show x
        return $ RunInfo {binSize = size, firstBinSize = first,
                          preserveOrder = po, readNull = n, binFmt = b,
                          action = a, deepLinks = deeplinks, sortFiles = dosort}
