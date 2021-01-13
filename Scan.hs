@@ -12,7 +12,6 @@ import Types
 import Control.Monad(liftM)
 import System.Posix.Files
 import System.Log.Logger
-import Data.List
 import Data.BinPacking
 
 scan :: RunInfo -> [FilePath] -> IO [[Result]]

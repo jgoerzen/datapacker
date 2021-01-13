@@ -74,10 +74,10 @@ action_link func ri =
 action_exec :: String -> RunInfo -> [(Integer, [FilePath])] -> IO ()
 action_exec cmd ri inp =
     do baseenv <- getEnvironment
-       let shell = case lookup "SHELL" baseenv of
+       let dshell = case lookup "SHELL" baseenv of
                      Nothing -> "/bin/sh"
                      Just x -> x
-       mapM_ (execCommand shell) inp
+       mapM_ (execCommand dshell) inp
     where execCommand sh (bin, fpl) = 
               do ph <- runProcess sh (["-c", cmd, sh, formatBin ri bin] ++ fpl)
                        Nothing Nothing Nothing Nothing Nothing 
@@ -85,4 +85,3 @@ action_exec cmd ri inp =
                  when (ec /= ExitSuccess)
                       (fail $ "action_exec: command failed on bin " ++ 
                             formatBin ri bin ++ ": " ++ show ec)
-                   
