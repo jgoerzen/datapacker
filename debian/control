@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: John Goerzen <jgoerzen@complete.org>
 Build-Depends: debhelper-compat (= 12), groff, docbook-utils, man-db, ghostscript,
  gtk-doc-tools, sgml2x,
- ghc (>= 6.8), haskell-devscripts (>= 0.6.6), libghc-missingh-dev (>= 1.0.1),
+ ghc, haskell-devscripts, libghc-missingh-dev,
  libghc-unix-dev, libghc-mtl-dev, libghc-filepath-dev, libghc-hslogger-dev
 Build-Conflicts: docbook-ebnf
 Standards-Version: 4.5.1

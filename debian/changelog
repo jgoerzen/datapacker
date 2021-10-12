@@ -1,3 +1,11 @@
+datapacker (1.0.4) UNRELEASED; urgency=medium
+
+  * Remove constraints unnecessary since buster:
+    + Build-Depends: Drop versioned constraint on ghc, haskell-devscripts and
+      libghc-missingh-dev.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Tue, 12 Oct 2021 12:26:01 -0000
+
 datapacker (1.0.3) unstable; urgency=medium
 
   [ Debian Janitor ]
