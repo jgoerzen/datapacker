@@ -3,6 +3,9 @@ datapacker (1.0.4) UNRELEASED; urgency=medium
   * Remove constraints unnecessary since buster:
     + Build-Depends: Drop versioned constraint on ghc, haskell-devscripts and
       libghc-missingh-dev.
+  * Bump debhelper from old 12 to 13.
+  * Add missing debian/rules targets build-indep, build-arch.
+  * Update standards version to 4.6.1, no changes needed.
 
  -- Debian Janitor <janitor@jelmer.uk>  Tue, 12 Oct 2021 12:26:01 -0000
 
